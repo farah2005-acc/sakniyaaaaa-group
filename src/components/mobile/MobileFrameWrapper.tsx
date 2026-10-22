@@ -23,16 +23,28 @@ export const MobileFrameWrapper: React.FC<MobileFrameWrapperProps> = ({
     <div className="min-h-screen bg-stone-900 py-6 px-4 flex flex-col items-center justify-center">
       {/* Top Banner to switch back to Desktop */}
       <div className="mb-4 flex items-center justify-between w-full max-w-[420px] text-xs text-stone-300">
-        <span className="flex items-center gap-1.5 font-bold">
-          <Smartphone className="w-4 h-4 text-[#C47D60]" />
-          <span>{language === 'ar' ? 'معاينة تطبيق الجوال (iOS / Android)' : 'Mobile App Simulation (iOS / Android)'}</span>
-        </span>
+        <div className="flex items-center gap-2.5">
+          <img
+            src="/src/assets/images/sakniya_house_logo_1792680398805.jpg"
+            alt="Sakniya Mobile App Icon"
+            referrerPolicy="no-referrer"
+            className="w-8 h-8 rounded-xl shadow-md ring-1 ring-white/20 object-cover"
+          />
+          <div className="flex flex-col">
+            <span className="font-bold text-white text-xs">
+              {language === 'ar' ? 'تطبيق سَكَنِيّة للهواتف' : 'Sakniya Mobile App'}
+            </span>
+            <span className="text-[10px] text-stone-400">
+              {language === 'ar' ? 'أيقونة التطبيق الرسمية (iOS / Android)' : 'Official App Icon (iOS / Android)'}
+            </span>
+          </div>
+        </div>
         <button
           onClick={() => setIsMobileDeviceMode(false)}
-          className="px-3 py-1 bg-white/10 hover:bg-white/20 rounded-lg text-white font-medium flex items-center gap-1 transition-colors"
+          className="px-3 py-1.5 bg-white/10 hover:bg-white/20 rounded-xl text-white font-medium flex items-center gap-1.5 transition-colors border border-white/10"
         >
           <Monitor className="w-3.5 h-3.5" />
-          <span>{language === 'ar' ? 'سطح المكتب' : 'Exit to Desktop'}</span>
+          <span>{language === 'ar' ? 'سطح المكتب' : 'Desktop'}</span>
         </button>
       </div>
 

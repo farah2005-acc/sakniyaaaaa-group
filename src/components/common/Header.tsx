@@ -12,6 +12,7 @@ import {
   Heart,
 } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
+import { SakniyaLogo } from './SakniyaLogo';
 
 interface HeaderProps {
   activeTab: string;
@@ -51,24 +52,14 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-4 sm:gap-8 h-20">
           
-          {/* Zone 1: Brand Wordmark (Single text element wordmark in display face) */}
+          {/* Zone 1: Brand Wordmark & New App Logo */}
           <div className="flex items-center gap-3 shrink-0">
-            <button
+            <SakniyaLogo
+              size="md"
+              variant="app_icon"
+              showText={true}
               onClick={() => setActiveTab('explore')}
-              className="flex items-center gap-2.5 text-left rtl:text-right group focus:outline-none"
-            >
-              <div className="w-10 h-10 rounded-2xl bg-[#765541] dark:bg-[#C47D60] text-[#F8F4EC] dark:text-[#191614] flex items-center justify-center font-bold text-xl shadow-sm group-hover:bg-[#604230] dark:group-hover:bg-[#b06a4e] transition-colors">
-                <span className="font-serif">س</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xl font-bold tracking-tight text-[#765541] dark:text-[#EDE6DE] font-serif leading-none">
-                  {language === 'ar' ? 'سَكَنِيّة' : 'Sakniya'}
-                </span>
-                <span className="text-[10px] text-[#A9B59A] font-medium tracking-wide">
-                  {language === 'ar' ? 'مكانك · وناسك · وراحتك' : 'Your space · Your people'}
-                </span>
-              </div>
-            </button>
+            />
           </div>
 
           {/* Zone 2: Clean single-line text navigation links */}

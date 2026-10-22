@@ -1,6 +1,7 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
 import { ShieldCheck, Heart, Sparkles, MapPin, Building2, PhoneCall } from 'lucide-react';
+import { SakniyaLogo } from './SakniyaLogo';
 
 export const Footer: React.FC = () => {
   const { language, setSearchFilter } = useApp();
@@ -12,14 +13,7 @@ export const Footer: React.FC = () => {
           
           {/* Brand Info */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-xl bg-[#765541] dark:bg-[#C47D60] text-[#F8F4EC] dark:text-[#191614] flex items-center justify-center font-bold text-lg font-serif">
-                س
-              </div>
-              <span className="text-xl font-bold font-serif text-[#765541] dark:text-[#EDE6DE]">
-                {language === 'ar' ? 'سَكَنِيّة' : 'Sakniya'}
-              </span>
-            </div>
+            <SakniyaLogo size="sm" variant="app_icon" showText={true} />
             <p className="text-xs text-[#765541]/80 leading-relaxed">
               {language === 'ar'
                 ? 'منصة السكن التشاركي ومطابقة رفقاء السكن الأولى للطلاب والموظفين في مصر. بيئة دافئة، عقود موثوقة، وأمان متكامل.'
