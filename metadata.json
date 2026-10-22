@@ -1,0 +1,6 @@
+{
+  "name": "Sakniya | سكنية — Housing & Roommate Matching",
+  "description": "Cozy bohemian housing discovery, roommate compatibility matching, verified rentals, and interactive commute planner across Egypt with Misbah AI assistant.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-ivory: #F8F4EC;
+    --color-oat: #E9DDCC;
+    --color-sage: #A9B59A;
+    --color-olive: #697A58;
+    --color-terracotta: #C47D60;
+    --color-walnut: #765541;
+    --color-charcoal: #34332F;
+  }
+
+  body {
+    font-family: 'Cairo', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    background-color: #F8F4EC;
+    color: #34332F;
+    overflow-x: hidden;
+  }
+
+  [dir="ltr"] {
+    font-family: 'Plus Jakarta Sans', 'Cairo', system-ui, -apple-system, sans-serif;
+  }
+}
+
+/* Custom subtle scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F8F4EC;
+}
+::-webkit-scrollbar-thumb {
+  background: #E9DDCC;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #C47D60;
+}
+
+/* Soft ambient glow animations */
+@keyframes warm-glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 12px rgba(196, 125, 96, 0.45));
+  }
+  50% {
+    filter: drop-shadow(0 0 24px rgba(245, 178, 124, 0.7));
+  }
+}
+
+.animate-glow {
+  animation: warm-glow 3s ease-in-out infinite;
+}
+
+/* Leaflet map styles */
+.leaflet-container {
+  font-family: inherit;
+  z-index: 10;
+  border-radius: 1rem;
+}

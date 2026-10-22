@@ -1,0 +1,1170 @@
+SAKNIYA — Complete Housing, Roommate Matching & Rental Platform
+
+Web + iOS + Android | Full-Stack Product Specification
+
+You are a senior product designer, UX researcher, full-stack engineer, mobile developer, database architect, AI engineer, and security specialist.
+
+Build Sakniya (سكنية), a complete housing platform for university students and employees in Egypt. The platform should combine the best housing discovery and booking experiences of Airbnb with a dedicated roommate compatibility system, verified listings, secure booking workflows, interactive maps, and an AI assistant named Misbah (مصباح).
+
+This must be a real, functional application, not a static landing page or a collection of mockup screens.
+
+Create a responsive web app and cross-platform iOS/Android app using a shared backend and consistent design system. If both platforms cannot be delivered in one environment, clearly separate the web and mobile implementations while sharing the same database, API, validation rules, and business logic.
+
+1. BRAND IDENTITY & VISUAL DIRECTION
+
+Brand: Sakniya | سكنية
+Tagline: Your space. Your people. Your peace.
+Arabic tagline: مكانك، وناسك، وراحتك.
+
+Visual concept: Cozy Bohemian, warm, earthy, natural, welcoming, and premium without feeling expensive or intimidating.
+
+Create a distinctive visual identity inspired by cozy bohemian interiors, natural textures, warm sunlight, plants, woven materials, linen, wood, and peaceful shared living spaces.
+
+Color palette:
+
+* Warm ivory: #F8F4EC
+* Oat beige: #E9DDCC
+* Sage green: #A9B59A
+* Olive green: #697A58
+* Terracotta: #C47D60
+* Warm walnut brown: #765541
+* Charcoal text: #34332F
+
+Use these as starting points and refine the palette for accessible contrast.
+
+Design elements:
+
+* Rounded property cards and soft corners.
+* Beautiful real-world housing photography.
+* Subtle paper, linen, and natural-texture details.
+* Warm ambient lighting in illustrations.
+* Organic shapes and restrained botanical elements.
+* Elegant, readable Arabic and English typography.
+* Minimal bottom navigation on mobile.
+* Smooth transitions and subtle micro-interactions.
+* Clear focus states, loading skeletons, empty states, and helpful errors.
+
+Avoid excessive gradients, neon colors, clutter, generic dashboards, and overly childish illustrations.
+
+Create:
+
+* Primary logo and Arabic wordmark.
+* Mobile app icon.
+* Splash screen with the Sakniya logo.
+* Light and dark modes if practical.
+* Consistent web, mobile, and email notification branding.
+
+2. THE MISBAH CHARACTER — مصباح
+
+Create an original, charming interactive lamp character named Misbah (مصباح).
+
+Misbah is Sakniya’s friendly housing assistant. Its visual appearance should be a small, warm, cozy table lamp with a soft glow, a subtle face or expressive light, and a recognizable silhouette.
+
+Interaction:
+
+* When the user first opens the app, Misbah appears as a small lamp icon or floating assistant.
+* The lamp is initially dim or switched off.
+* When the user taps it, its light smoothly turns on with a warm amber glow.
+* When tapped again, the light dims or turns off.
+* Opening the chat displays a friendly greeting in Arabic or English according to the user’s language.
+* Use subtle animation, a glow effect, and a short transition. Respect reduced-motion accessibility preferences.
+* The character should remain unobtrusive and never cover important buttons.
+
+Misbah should help users:
+
+* Find suitable properties.
+* Explain listing details and additional fees.
+* Filter housing according to personal needs.
+* Compare properties.
+* Understand roommate compatibility.
+* Estimate commute times when reliable route data is available.
+* Explain the booking process.
+* Answer FAQs and guide users to support.
+
+The assistant must use real property data from the application when recommending listings. It must not invent availability, prices, owner verification, payment status, or property features.
+
+Provide quick actions such as:
+“Find me a room”, “Find my roommate match”, “Help me choose an area”, “Explain the fees”, and “Track my booking”.
+
+Use a configurable AI service on the backend, with secure API keys, conversation privacy controls, graceful error handling, and a fallback FAQ assistant when AI credentials are unavailable.
+
+3. SIGN-UP, SIGN-IN & ONBOARDING
+
+Create polished, complete authentication screens.
+
+Welcome Screen
+
+* Sakniya logo and tagline.
+* Warm interior illustration or authentic property photography.
+* “Find your place” primary CTA.
+* “List your property” secondary CTA.
+* Arabic/English language switch.
+* Login and create-account links.
+
+Sign-Up Page
+
+Support:
+
+* Full name.
+* Email address.
+* Phone number with Egyptian country code.
+* Password and confirmation.
+* Account type: Tenant or Property Owner.
+* Acceptance of terms and privacy policy.
+* Email verification and phone OTP verification when configured.
+
+Validate email, phone format, password strength, duplicate accounts, and missing fields. Display understandable Arabic and English error messages.
+
+Social login may be offered if properly configured.
+
+Sign-In Page
+
+* Email or phone login.
+* Password visibility toggle.
+* Remember-session option using secure authentication practices.
+* Forgot password.
+* OTP or other supported authentication methods.
+* Account recovery.
+* Clear messages for incorrect credentials and unverified accounts.
+
+Onboarding
+
+After registration, guide each role through its own onboarding flow.
+
+Tenant onboarding collects housing preferences and lifestyle information.
+
+Owner onboarding collects personal details, verification requirements, and listing information.
+
+Allow users to save progress and continue later. Do not require unnecessary identity documents before explaining why they are needed.
+
+4. TENANT EXPERIENCE — THE COMPLETE TENANT JOURNEY
+
+Create a dedicated tenant home page and tenant dashboard.
+
+The tenant home screen should include:
+
+* Personalized greeting.
+* Search bar with location suggestions.
+* “Where do you want to live?” prompt.
+* Recently viewed properties.
+* Recommended properties.
+* Verified listings.
+* Rooms near selected destinations.
+* Best matches for the tenant’s lifestyle.
+* Affordable options.
+* Saved properties.
+* Recent searches.
+* Map/list toggle.
+* Misbah floating assistant.
+
+Tenant Profile
+
+Include:
+
+* Profile picture.
+* Full name and verified contact details.
+* Student or employee status.
+* University, faculty, or workplace where relevant.
+* Preferred city and neighborhoods.
+* Move-in date.
+* Budget range.
+* Preferred lease duration.
+* Lifestyle profile completion indicator.
+* Verification status.
+* Booking history.
+* Reviews written.
+* Privacy settings and account deletion.
+
+Only display profile information that the user has explicitly chosen to share.
+
+Tenant Booking Dashboard
+
+Sections:
+
+* Pending requests.
+* Accepted requests.
+* Awaiting payment.
+* Confirmed bookings.
+* Current stay.
+* Completed stays.
+* Cancelled bookings.
+* Disputes and refund requests.
+
+Each booking should display:
+
+* Property and room details.
+* Booking reference.
+* Check-in and check-out dates, where applicable.
+* Full cost breakdown.
+* Owner contact through in-app chat.
+* Payment status.
+* Cancellation policy.
+* Support access.
+
+5. THE ROOMMATE MATCHING SYSTEM — SAKNIYA’S SIGNATURE FEATURE
+
+Create a dedicated feature called “Find Your Roommate” or “Roommate Match”.
+
+This is not a basic list of roommates. Build a structured lifestyle compatibility questionnaire, a transparent matching algorithm, privacy settings, and a dedicated matching-results page.
+
+Tenant Lifestyle Questionnaire
+
+Use a beautiful, multi-step form with progress indicators, save-and-resume, skip options where appropriate, and a review page before submission.
+
+A. Daily Routine
+
+* Usual waking time.
+* Usual sleeping time.
+* Early bird, night owl, or flexible schedule.
+* University or work schedule.
+* Typical time spent at home.
+* Study-at-home frequency.
+
+B. Cleanliness and Shared Responsibilities
+
+* Preferred room cleanliness.
+* How often shared areas should be cleaned.
+* Comfort with sharing cleaning tasks.
+* Preferred organization level.
+* Kitchen cleaning expectations.
+* Bathroom cleaning expectations.
+* Shared shopping and supplies preferences.
+
+C. Smoking and Air Quality
+
+* Smokes.
+* Does not smoke.
+* Comfortable living with smokers.
+* Smoking allowed or prohibited inside the property.
+
+Treat smoking compatibility as a declared preference. Never infer it from appearance, identity, or unrelated profile information.
+
+D. Pets and Animals
+
+* Has pets.
+* Comfortable living with pets.
+* Preferred pet types.
+* Allergies or accommodation requirements, shared voluntarily.
+* Property pet restrictions.
+
+E. Noise and Study Habits
+
+* Prefers a quiet environment.
+* Comfortable with moderate background noise.
+* Frequently plays music or watches media.
+* Needs quiet hours for studying.
+* Online classes or remote work.
+* Preferred quiet hours.
+
+F. Guests and Social Life
+
+* Comfortable with occasional guests.
+* Preferred guest frequency.
+* Overnight guest expectations.
+* Social or more private living style.
+* Shared activities versus independent time.
+* Shared meals preferences.
+
+G. Lifestyle and Shared Resources
+
+* Air-conditioning preferences.
+* Kitchen usage.
+* Cooking frequency.
+* Food-sharing preferences.
+* Utility-sharing expectations.
+* Preferred level of personal privacy.
+* Work or study from home.
+* Shared versus separate room arrangements.
+
+H. Budget and Accommodation
+
+* Maximum monthly budget.
+* Preferred rent-sharing arrangement.
+* Preferred room type.
+* Preferred number of roommates.
+* Preferred bathroom arrangement.
+* Move-in date.
+* Preferred lease duration.
+* Preferred city and neighborhoods.
+
+I. Communication and Conflict Resolution
+
+* Prefers discussing problems immediately.
+* Prefers calm conversations after some time.
+* Prefers written communication.
+* Preferred way to agree on shared responsibilities.
+* Willingness to use shared house rules.
+
+Keep sensitive or optional questions voluntary. Do not request diagnoses, religion, ethnicity, or other unnecessary sensitive personal information.
+
+Roommate Compatibility Algorithm
+
+Build a transparent compatibility score from declared preferences.
+
+Initial configurable weights:
+
+* Daily routine and sleep schedule: 20%.
+* Cleanliness and shared responsibilities: 20%.
+* Noise and study habits: 15%.
+* Smoking and air-quality preferences: 15%.
+* Guests and social lifestyle: 10%.
+* Pets and animal preferences: 10%.
+* Kitchen and shared-resource habits: 5%.
+* Communication and conflict resolution: 5%.
+
+The weights must be adjustable from the admin settings and validated with user feedback.
+
+Rules:
+
+* Do not calculate compatibility from names, profile photos, gender stereotypes, or unrelated personal characteristics.
+* Apply hard constraints only where explicitly selected by the user and relevant to the accommodation, safety, or property rules.
+* Distinguish hard incompatibilities from ordinary preference differences.
+* If a critical question is unanswered, label the match as provisional rather than pretending the score is accurate.
+* Explain why two profiles match and where their preferences differ.
+* Do not guarantee that a high score means two people will get along.
+
+Example result:
+
+“92% Lifestyle Match”
+
+“You both prefer a quiet home, similar sleep schedules, a clean kitchen, and limited guests. You differ slightly in air-conditioning preferences.”
+
+Display:
+
+* Compatibility score.
+* Shared preferences.
+* Potential conflicts.
+* Missing information.
+* Suggested questions to discuss before booking.
+* Send interest, shortlist, or start chat actions.
+* Report and block actions.
+
+Only show roommate profiles to users who have opted into discovery. Never reveal private contact information, identity documents, or exact residential addresses.
+
+Support an option to find roommates first and housing second, or find a property first and match with other people interested in the same property.
+
+6. PROPERTY OWNER EXPERIENCE — A DEDICATED OWNER AREA
+
+The owner must have a complete independent experience, not merely a button that uploads property photos.
+
+Create an Owner Landing Page, Owner Dashboard, Property Management Area, and Listing Creation Wizard.
+
+Owner Landing Page
+
+Show:
+
+* “List your property with Sakniya”.
+* Benefits of listing with the platform.
+* Verification and trust process.
+* Transparent commission explanation.
+* How booking requests work.
+* Listing quality checklist.
+* Frequently asked questions.
+* “Become a Host” CTA.
+
+Owner Dashboard
+
+Include:
+
+* Overview of active listings.
+* Total views and saves.
+* Booking requests.
+* Upcoming confirmed stays.
+* Pending verification.
+* Property availability.
+* Unread messages.
+* Reviews.
+* Earnings and platform commission records.
+* Refunds and disputes.
+* Listing performance analytics.
+
+Clearly distinguish actual transactions from sample data.
+
+Create a Property Listing
+
+Build a step-by-step wizard with autosave.
+
+Step 1 — Property Type:
+
+* Apartment.
+* Private room.
+* Shared room.
+* Studio.
+* Bed in a shared room.
+* Student residence or other eligible accommodation.
+
+Step 2 — Location:
+
+* Governorate.
+* City.
+* District or neighborhood.
+* Street or approximate location.
+* Map pin.
+* Nearby landmarks.
+* Nearby universities and workplaces.
+* Commute information.
+* Exact address visibility settings.
+
+Step 3 — Rooms and Capacity:
+
+* Total bedrooms.
+* Available rooms.
+* Number of beds.
+* Maximum occupants.
+* Private or shared bathroom.
+* Kitchen availability.
+* Shared living areas.
+* Furniture and storage.
+
+Step 4 — Amenities:
+
+* Air conditioning.
+* Wi-Fi.
+* Clean kitchen.
+* Refrigerator.
+* Washing machine.
+* Hot water.
+* Heating where relevant.
+* Elevator.
+* Balcony.
+* Security features.
+* Accessibility features.
+* Utilities included or excluded.
+
+Step 5 — Photos and Media:
+
+* Upload multiple property images.
+* Select a cover photo.
+* Arrange photo order.
+* Upload permitted video tours.
+* Add descriptions to images.
+* Flag unsuitable or misleading media.
+
+Show a quality checklist and warn when photos or important details are missing.
+
+Step 6 — Pricing:
+
+* Nightly price for eligible short stays.
+* Monthly price.
+* Semester or annual rental price.
+* Deposit.
+* Utilities and extra fees.
+* Cleaning fees where applicable.
+* Platform commission.
+* Minimum and maximum stay.
+* Cancellation policy.
+
+Do not force every rental into a nightly pricing model. Allow owners to select which rental durations they offer.
+
+Step 7 — House Rules:
+
+* Smoking policy.
+* Pet policy.
+* Quiet hours.
+* Guests policy.
+* Shared-area rules.
+* Cleaning responsibilities.
+* Check-in arrangements.
+* Tenant eligibility requirements where lawful.
+* Other clearly stated conditions.
+
+Step 8 — Availability:
+
+* Available dates.
+* Occupied dates.
+* Booking calendar.
+* Minimum notice.
+* Lease start and end dates.
+* Prevent conflicting confirmed bookings.
+
+Step 9 — Verification:
+
+* Government-issued ID.
+* Proof of ownership or legal authorization to rent.
+* Required contact numbers.
+* Additional evidence requested by the platform.
+* Consent and privacy notices.
+
+Step 10 — Preview and Publish:
+
+* Preview listing as a tenant sees it.
+* Edit any section.
+* Submit for review.
+* Display pending, approved, rejected, or changes-required status.
+* Publish only after required checks are completed.
+
+Owner Property Management
+
+For each property, allow:
+
+* Edit listing.
+* Upload and reorder images.
+* Update price.
+* Update availability.
+* Temporarily pause listing.
+* Manage booking requests.
+* Accept or reject requests.
+* Respond to tenant questions.
+* Review property analytics.
+* View commission statements.
+* Handle eligible cancellation and refund requests.
+* Report suspicious activity.
+
+Owners must only access and modify listings they are authorized to manage.
+
+7. AIRBNB-STYLE PROPERTY DISCOVERY
+
+Build a rich, interactive search and discovery experience.
+
+Search Bar
+
+Include:
+
+* Destination.
+* Governorate.
+* City.
+* Neighborhood.
+* University or workplace.
+* Check-in and check-out dates or preferred move-in date.
+* Flexible date option.
+* Number of occupants.
+* Budget.
+* Search button.
+
+Search should support Arabic and English place names, common spelling variations, autocomplete, recent searches, and useful empty-state suggestions.
+
+Filters
+
+Provide filters for:
+
+* Price range.
+* Accommodation type.
+* Room type.
+* Private or shared bathroom.
+* Air conditioning.
+* Clean kitchen.
+* Wi-Fi.
+* Furnished status.
+* Number of roommates.
+* Availability.
+* Lease duration.
+* Verified owner.
+* House rules.
+* Pets allowed.
+* Smoking restrictions.
+* Preferred roommate compatibility.
+* Distance or travel time to a selected destination.
+* Accessibility needs.
+
+Provide clear “Apply filters” and “Reset filters” actions.
+
+Search Results
+
+Offer:
+
+* List view.
+* Map view.
+* Sort by relevance, price, newest, and rating where available.
+* Save to favorites.
+* Compare selected properties.
+* Recently viewed listings.
+* Recommended for you.
+* Compatible roommates.
+* Clear indicators for sponsored or promoted listings.
+
+Every recommendation should explain the relevant criteria.
+
+Property Detail Page
+
+Include:
+
+* High-quality image gallery.
+* Property overview.
+* Full description.
+* Monthly price and applicable fees.
+* Available rooms.
+* Amenities.
+* House rules.
+* Owner profile and verification status.
+* Availability calendar.
+* Map and approximate location.
+* Commute information.
+* Eligible reviews.
+* Similar properties.
+* Roommate matching options.
+* Contact owner.
+* Save property.
+* Report listing.
+* Request booking.
+
+Clearly state what is included in rent and what costs extra.
+
+8. EGYPT-WIDE LOCATION DIRECTORY
+
+Build a searchable location system covering all 27 Egyptian governorates, not only the initial launch cities.
+
+The directory should support:
+
+* Governorate.
+* City.
+* District.
+* Neighborhood.
+* Village or other locality where supported.
+* University campus.
+* Workplace or custom destination.
+* Map coordinates where verified.
+
+Seed the directory with verified, maintainable location data. Include a custom location option if a user cannot find their neighborhood.
+
+Initial priority cities and areas:
+
+Alexandria:
+
+* Shatby.
+* Azarita.
+* Sporting.
+* Sidi Gaber.
+* Smouha.
+* Miami.
+* Mandara.
+* Agami.
+* Borg El Arab.
+* New Borg El Arab.
+* Other neighborhoods as the location directory expands.
+
+Cairo and Greater Cairo:
+
+* Downtown.
+* Nasr City.
+* Heliopolis.
+* Maadi.
+* Abbassia.
+* Dokki.
+* Mohandessin.
+* Giza.
+* Faisal.
+* Haram.
+* New Cairo.
+* Fifth Settlement.
+* Obour.
+* Shorouk.
+* Badr.
+* Other supported districts.
+
+6th of October and nearby areas:
+
+* 6th of October City.
+* Sheikh Zayed.
+* Hadayek October.
+* Nearby districts and new urban communities.
+
+Other initial priorities:
+
+* Tanta.
+* Kafr El Sheikh.
+* Damanhour.
+* Mansoura.
+* Shebin El Kom.
+* Quesna.
+* Sadat City.
+* Borg El Arab.
+* Beheira localities.
+* Delta cities and other Egyptian governorates.
+
+These are starting examples, not an exhaustive list.
+
+University Directory
+
+Create a separate university and campus directory with:
+
+* Official institution name in Arabic and English.
+* Institution type.
+* Governorate and city.
+* Campus or faculty location.
+* Verified map coordinates.
+* Official website where available.
+* Data source.
+* Last verification date.
+* Active or inactive status.
+
+Seed the directory from authoritative Egyptian higher-education sources, including the Ministry of Higher Education and the Supreme Council of Universities. Include public, private, national, technological, and other accredited institutions as appropriate.
+
+Prioritize institutions and campuses in:
+
+* Alexandria and Borg El Arab.
+* Cairo and Greater Cairo.
+* 6th of October and Sheikh Zayed.
+* Tanta and Gharbia.
+* Kafr El Sheikh.
+* Damanhour and Beheira.
+* Mansoura and Dakahlia.
+* Menoufia, including Shebin El Kom and Quesna.
+* Other university cities throughout Egypt.
+
+Do not assume a university is physically located in the same area as every faculty it operates. Verify individual campus locations before using them for commute calculations.
+
+Administrators should be able to add, edit, merge, and deactivate duplicate or outdated locations.
+
+Location Flexibility
+
+Users must never be forced to live near a university.
+
+Allow users to:
+
+* Search any area in the governorate.
+* Select a university as a commute reference without restricting the search to its immediate surroundings.
+* Set a maximum acceptable commute time.
+* Search near a workplace, metro station, bus stop, or custom map pin.
+* View properties without selecting any university.
+* Compare cheaper areas with longer commutes.
+
+9. INTERACTIVE MAP AND COMMUTE PLANNER
+
+Integrate a configurable mapping provider, such as Google Maps or Mapbox, subject to API keys and usage terms. An OpenStreetMap-based solution may be used where suitable.
+
+Features:
+
+* Map pins for listings with approximate public locations.
+* Cluster pins when the map is crowded.
+* Open a property preview card from a pin.
+* Switch between map and list.
+* Draw or show route options where supported.
+* Estimate travel time by walking, driving, or public transport where data exists.
+* Search by map area.
+* Update results when the map is moved.
+* Save preferred search areas.
+* Show nearby amenities when reliable data is available.
+
+Commute feature:
+A tenant selects a university, workplace, or custom destination and chooses a maximum travel time, such as 5, 15, 30, or 45 minutes.
+
+Rank properties by actual route estimates when the necessary route data is available.
+
+Do not claim a property is five minutes from a destination using straight-line distance alone. Clearly distinguish estimated driving, walking, and public-transport times. Display an unavailable state if route data cannot be retrieved.
+
+10. PERSONALIZED HOUSING RECOMMENDATION ENGINE
+
+Create a recommendation system that combines:
+
+* Budget.
+* Selected location.
+* Commute requirements.
+* Room type.
+* Amenities.
+* Availability.
+* Lease duration.
+* Owner verification.
+* House rules.
+* Tenant lifestyle preferences.
+* Roommate compatibility.
+
+Allow tenants to choose which requirements are mandatory and which are flexible.
+
+Each result should include a short explanation, for example:
+
+“Recommended because it fits your budget, has air conditioning and a private bathroom, and is estimated to be 12 minutes from your selected campus.”
+
+Do not fabricate features or route estimates.
+
+When no listing matches all requirements:
+
+* Explain which filters are limiting the results.
+* Suggest optional adjustments.
+* Preserve mandatory safety and accessibility requirements.
+* Never silently change the user’s budget or other preferences.
+
+11. BOOKING AND AVAILABILITY
+
+Implement a complete booking lifecycle.
+
+1. Tenant chooses an available property or room.
+2. Tenant selects a rental duration and move-in date.
+3. The system calculates the full price breakdown.
+4. Tenant reviews house rules, lease terms, cancellation terms, and any deposit.
+5. Tenant submits a request.
+6. Owner accepts, rejects, or asks a question.
+7. The system rechecks availability before confirmation.
+8. Tenant completes payment through an available configured payment method.
+9. Verified payment events update booking status.
+10. Both parties receive notifications.
+11. Tenant can access the booking details, support, and eligible cancellation or refund flows.
+
+Statuses:
+
+* Draft.
+* Pending owner response.
+* Accepted.
+* Awaiting payment.
+* Confirmed.
+* Active stay.
+* Completed.
+* Cancelled.
+* Disputed.
+
+Use database transactions or appropriate concurrency controls to prevent double-booking.
+
+Support short stays where allowed, monthly rentals, semester stays, and annual rentals according to each listing’s rules.
+
+12. TRUSTED PAYMENTS IN EGYPT
+
+Design a secure payment system with a provider abstraction layer.
+
+Potential methods to evaluate and integrate, subject to provider support, account eligibility, commercial approval, and current API availability:
+
+* Visa and Mastercard through a supported payment gateway.
+* InstaPay-compatible payment instructions or supported integrations where available.
+* Vodafone Cash through an authorized supported payment flow.
+* Other supported Egyptian e-payment methods and wallets.
+* Bank transfer where appropriate.
+
+Do not assume every provider exposes a direct API for every use case. Verify current integration documentation and merchant eligibility before implementation.
+
+Payment screen:
+
+* Order summary.
+* Rent amount.
+* Platform fee.
+* Deposit and other charges.
+* Discounts if applicable.
+* Total due.
+* Payment method selection.
+* Clear payment status.
+* Receipt and transaction reference.
+
+Security:
+
+* Use authorized payment-provider checkout flows.
+* Verify transactions server-side.
+* Validate payment webhooks and make webhook processing idempotent.
+* Never store raw card information.
+* Never trust screenshots or user-submitted messages as proof of payment.
+* Do not release a booking as paid without verified payment confirmation.
+
+If an approved provider does not support direct integration for a selected method, show the supported alternative and a clearly labeled manual-verification workflow if legally and operationally appropriate.
+
+In development mode, use sandbox transactions only. Label simulated payments as DEMO and never present them as actual successful transactions.
+
+Commission Model
+
+Use configurable platform commission rules:
+
+* 15% for eligible short stays of 2–3 days.
+* 5% for eligible semester or annual rental agreements.
+
+Let administrators configure the rates and applicable rental categories. Display the commission, owner net amount, tenant fees, and cancellation implications transparently.
+
+Do not charge real money or initiate real transfers until the payment integration and applicable policies have been properly configured.
+
+13. IN-APP CHAT AND COMMUNICATION
+
+Create a real-time messaging experience for tenants and owners.
+
+Include:
+
+* Conversation list.
+* Property context inside each conversation.
+* Message timestamps.
+* Read receipts where supported.
+* Text and supported image attachments.
+* Booking references.
+* Report and block controls.
+* Unread message counts.
+* Push notifications where configured.
+* Clear privacy and retention controls.
+
+Allow conversations before booking under the platform’s rules, but protect personal contact details and discourage unsafe off-platform payment requests.
+
+Misbah can answer common questions and guide users, but must not secretly read private conversations or expose them to unrelated users.
+
+14. RATINGS, REVIEWS AND SAFETY
+
+Implement:
+
+* Reviews after eligible completed stays.
+* Separate property and owner feedback where appropriate.
+* Review moderation and reporting.
+* Owner responses.
+* Report listing and report user.
+* Support tickets.
+* Dispute tracking.
+* Cancellation and refund requests.
+* Evidence attachments with private access.
+* Admin review queues.
+
+Only verified eligible transactions may create verified-stay reviews.
+
+Do not permit owners to remove legitimate reviews simply because they are negative. Provide moderation rules and an appeal process.
+
+15. VERIFICATION AND PRIVATE DOCUMENTS
+
+Create a secure verification center.
+
+Owner documents may include:
+
+* Government-issued identity document.
+* Proof of ownership or legally valid authorization to rent.
+* Required contact information.
+* Supporting evidence requested for a specific case.
+
+Tenant documents may include:
+
+* Government-issued identity verification where required.
+* University identification or enrollment proof.
+* Employment verification when relevant.
+* Other proportionate documents only when justified.
+
+Verification flow:
+
+1. Explain why a document is requested.
+2. Obtain the user’s consent.
+3. Allow secure upload.
+4. Display submission status.
+5. Restrict review to authorized personnel.
+6. Notify the user of the result.
+7. Support resubmission or appeal.
+
+Use private object storage, short-lived signed URLs where appropriate, strict authorization policies, file-type validation, retention limits, and audit logs.
+
+Never show identity documents publicly or include them in property galleries. Never label a user or listing verified solely because documents were uploaded.
+
+16. MISBAH AI CHATBOT — FULL SPECIFICATION
+
+Create a dedicated Misbah chat page and floating assistant.
+
+Capabilities:
+
+* Answer housing FAQs in Egyptian Arabic and English.
+* Search listings using the user’s natural-language requirements.
+* Ask clarifying questions when the request is incomplete.
+* Recommend suitable properties.
+* Explain rent, deposits, fees, and house rules.
+* Compare two or more properties.
+* Explain roommate match scores.
+* Suggest questions to ask potential roommates.
+* Estimate commute only through reliable configured route data.
+* Explain booking status using authorized account data.
+* Guide owners through creating and improving a listing.
+* Explain the verification workflow.
+* Direct users to support for disputes or payment issues.
+
+Example requests:
+“عايزة أوضة بتكييف وحمام خاص، والمطبخ يكون نضيف.”
+“عايزة سكن في دمنهور، مش شرط قريب من الجامعة.”
+“Find a quiet roommate who doesn’t smoke and keeps shared areas clean.”
+“Compare these two rooms and show me the full monthly cost.”
+“Why did my booking remain pending?”
+
+Misbah must:
+
+* Ask before changing saved preferences.
+* Explain recommendation criteria.
+* Avoid hallucinating properties or payments.
+* Respect role-based permissions.
+* Never expose identity documents or private contact information.
+* Clearly distinguish estimated information from confirmed information.
+* Hand over to human support for complex disputes or uncertain payment issues.
+
+Provide a fallback search-based assistant if the AI service is unavailable.
+
+17. FAVORITES, COMPARISON AND SAVED SEARCHES
+
+Create:
+
+* Favorites list.
+* Saved search criteria.
+* Notifications when matching new properties appear.
+* Compare up to three properties side by side.
+* Compare monthly cost, deposits, amenities, room type, location, commute, owner status, house rules, and roommate compatibility.
+* Recently viewed properties.
+* Shareable listing links that do not reveal private information.
+
+18. NOTIFICATIONS AND REMINDERS
+
+Provide in-app notifications for:
+
+* New booking requests.
+* Owner responses.
+* Payment confirmations.
+* Booking changes.
+* New messages.
+* Verification decisions.
+* Listing approval or rejection.
+* Saved-search matches.
+* Upcoming move-in dates.
+* Support responses.
+
+Email, SMS, WhatsApp messaging, and push notifications must use supported, properly configured providers. Provide in-app fallbacks if these services are not configured.
+
+Let users control notification preferences.
+
+19. ADMINISTRATOR CONSOLE
+
+Create a protected admin console with:
+
+* Tenant and owner account management.
+* Verification queues.
+* Listing moderation.
+* Booking oversight.
+* Payment and refund records.
+* Commission rules.
+* Dispute management.
+* Support ticket management.
+* Reports and abuse review.
+* University and location directory management.
+* AI assistant configuration.
+* Notification configuration.
+* Audit logs.
+* Platform analytics.
+
+Enforce server-side role checks for every privileged operation. Hiding an admin button in the interface is not sufficient authorization.
+
+20. DATABASE AND BACKEND ARCHITECTURE
+
+Use PostgreSQL through Supabase or a suitable equivalent.
+
+Create normalized tables and relationships for:
+
+* profiles
+* user_roles
+* tenant_profiles
+* owner_profiles
+* tenant_lifestyle_preferences
+* roommate_match_preferences
+* roommate_interests
+* cities
+* governorates
+* neighborhoods
+* universities
+* university_campuses
+* destinations
+* properties
+* property_rooms
+* property_images
+* property_amenities
+* property_rules
+* property_availability
+* owner_verifications
+* tenant_verifications
+* bookings
+* booking_status_history
+* conversations
+* conversation_members
+* messages
+* favorites
+* saved_searches
+* roommate_matches
+* reviews
+* payments
+* refunds
+* commission_rules
+* notifications
+* support_tickets
+* reports
+* audit_logs
+
+Add appropriate foreign keys, unique constraints, indexes, timestamps, and data validation.
+
+Enforce row-level security and least-privilege access.
+
+Users must access only their authorized data. Owners must not modify another owner’s property. Tenants must not access another tenant’s private bookings. Conversation messages must be accessible only to authorized participants and permitted systems.
+
+Use server-side functions for privileged operations, verified payments, commission calculations, booking confirmation, and administrative actions.
+
+21. MOBILE APP REQUIREMENTS
+
+Create a genuine cross-platform mobile application for iOS and Android, not just a screenshot or a web page inside a mobile frame.
+
+Mobile features:
+
+* Branded splash screen.
+* Onboarding.
+* Sign-up and sign-in.
+* Bottom navigation.
+* Search and map.
+* Listing details.
+* Lifestyle questionnaire.
+* Roommate matching.
+* Favorites.
+* Booking and payment.
+* Messaging.
+* Misbah assistant.
+* Notifications.
+* Tenant and owner dashboards.
+* Profile and verification settings.
+
+Use responsive components, platform-appropriate navigation, secure session handling, permission prompts only when needed, and graceful offline/error states.
+
+22. WEB APPLICATION REQUIREMENTS
+
+Create:
+
+* Public landing page.
+* Search and listing pages.
+* Property detail routes.
+* Tenant account area.
+* Owner dashboard.
+* Listing creation wizard.
+* Admin console.
+* Chat and notification views.
+* Support and legal pages.
+
+Support direct links to public listings, browser navigation, responsive layouts, accessible forms, and sensible page metadata.
+
+Do not expose protected account pages to unauthenticated users.
+
+23. TESTING AND ACCEPTANCE CRITERIA
+
+Do not declare the project complete until the following can be tested:
+
+1. A tenant can sign up, verify their account, and sign in.
+2. An owner can register, submit verification documents, and create a listing.
+3. An administrator can review the submission and approve or reject it.
+4. Only approved listings appear as verified.
+5. A tenant can search by city, neighborhood, amenities, budget, and destination.
+6. A tenant can view properties on a map when map integration is configured.
+7. Commute estimates are based on route data, not invented numbers.
+8. A tenant can complete and edit a roommate questionnaire.
+9. The matching engine explains compatibility and missing information.
+10. Tenants can opt into roommate discovery and manage privacy.
+11. An owner can manage availability and respond to bookings.
+12. Conflicting confirmed bookings are prevented.
+13. Chat messages are private to authorized participants.
+14. Payment states change only after valid server-side confirmation.
+15. Demo payments are clearly identified as simulated.
+16. Users can report listings and submit support requests.
+17. Arabic RTL and English LTR layouts work correctly.
+18. The application works on mobile and desktop.
+19. Database authorization policies are tested.
+20. The README explains local setup, environment variables, migrations, seed data, testing, and deployment.
+
+24. IMPLEMENTATION STRATEGY
+
+Build in prioritized, testable phases.
+
+Phase 1:
+Brand identity, sign-in/sign-up, role-based onboarding, responsive home, search, sample property listings, and property detail pages.
+
+Phase 2:
+Real database, tenant and owner profiles, listing creation wizard, secure document submission, verification, and favorites.
+
+Phase 3:
+Lifestyle questionnaire, roommate matching, explanations, chat, map, location directory, and personalized recommendations.
+
+Phase 4:
+Booking lifecycle, availability management, notifications, payment-provider sandbox, commission calculations, and refunds.
+
+Phase 5:
+Production payment integration, admin console, AI assistant, security hardening, automated tests, deployment, and mobile builds.
+
+Start with Phase 1 and establish a maintainable architecture for the remaining phases. Do not try to generate every advanced feature as disconnected mock screens.
+
+At each phase:
+
+* Implement the actual user journeys.
+* Test every visible action.
+* Identify unfinished integrations.
+* Fix errors before moving forward.
+* Preserve working functionality.
+* Explain what is functional, simulated, or awaiting external configuration.
+
+Deliver a coherent, beautiful, secure, and extensible Sakniya platform that feels like a real product and makes finding safe housing and compatible roommates significantly easier.
