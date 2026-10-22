@@ -16,6 +16,7 @@ import { ChatModal } from './components/chat/ChatModal';
 import { VerificationModal } from './components/auth/VerificationModal';
 import { AdminConsole } from './components/admin/AdminConsole';
 import { MisbahWidget } from './components/misbah/MisbahWidget';
+import { PersistentComparisonBar } from './components/discovery/PersistentComparisonBar';
 import { MobileFrameWrapper } from './components/mobile/MobileFrameWrapper';
 import { PropertyListing, PropertyRoom, Booking } from './types';
 import { Sparkles, ShieldCheck, Heart, Map, List, CheckCircle2 } from 'lucide-react';
@@ -83,7 +84,7 @@ const MainApp: React.FC = () => {
 
   return (
     <MobileFrameWrapper activeTab={activeTab} setActiveTab={setActiveTab}>
-      <div className="min-h-screen flex flex-col bg-[#F8F4EC] text-[#34332F]">
+      <div className="min-h-screen flex flex-col bg-[#F8F4EC] dark:bg-[#191614] text-[#34332F] dark:text-[#EDE6DE] transition-colors duration-300">
         
         {/* Global Notification Toast */}
         {notification && (
@@ -160,10 +161,10 @@ const MainApp: React.FC = () => {
               {/* Controls bar: Results Count & View Mode Toggle */}
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-lg font-bold font-serif text-[#34332F]">
+                  <h2 className="text-lg font-bold font-serif text-[#34332F] dark:text-[#EDE6DE]">
                     {language === 'ar' ? 'العقارات والغرف المتاحة' : 'Available Spaces'}
                   </h2>
-                  <p className="text-xs text-stone-500">
+                  <p className="text-xs text-stone-500 dark:text-[#9E9287]">
                     {filteredProperties.length} {language === 'ar' ? 'عقار معتمد ومتحقق منه' : 'verified listings found'}
                   </p>
                 </div>
@@ -174,26 +175,26 @@ const MainApp: React.FC = () => {
                     onClick={() => setSearchFilter((prev) => ({ ...prev, favoritesOnly: !prev.favoritesOnly }))}
                     className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all border ${
                       searchFilter.favoritesOnly
-                        ? 'bg-[#C47D60] text-white border-[#C47D60] shadow-sm'
-                        : 'bg-white hover:bg-[#F8F4EC] text-[#765541] border-[#E9DDCC]'
+                        ? 'bg-[#C47D60] dark:bg-[#D8896C] text-white border-[#C47D60] shadow-sm'
+                        : 'bg-white dark:bg-[#24201D] hover:bg-[#F8F4EC] dark:hover:bg-[#2D2723] text-[#765541] dark:text-[#D4BFA8] border-[#E9DDCC] dark:border-[#3D352E]'
                     }`}
                     title={language === 'ar' ? 'تصفية حسب العقارات المفضلة' : 'Filter by favorites'}
                   >
-                    <Heart className={`w-3.5 h-3.5 transition-transform ${searchFilter.favoritesOnly ? 'fill-current scale-110' : 'text-[#C47D60]'}`} />
+                    <Heart className={`w-3.5 h-3.5 transition-transform ${searchFilter.favoritesOnly ? 'fill-current scale-110' : 'text-[#C47D60] dark:text-[#D8896C]'}`} />
                     <span>{language === 'ar' ? 'المفضلة' : 'Favorites'}</span>
                     <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-bold font-mono tabular-nums ${
-                      searchFilter.favoritesOnly ? 'bg-white text-[#C47D60]' : 'bg-[#E9DDCC] text-[#765541]'
+                      searchFilter.favoritesOnly ? 'bg-white text-[#C47D60]' : 'bg-[#E9DDCC] dark:bg-[#3D352E] text-[#765541] dark:text-[#D4BFA8]'
                     }`}>
                       {favorites.length}
                     </span>
                   </button>
 
                   {/* Grid / Map segmented control */}
-                  <div className="flex items-center p-1 bg-white rounded-xl border border-[#E9DDCC]">
+                  <div className="flex items-center p-1 bg-white dark:bg-[#24201D] rounded-xl border border-[#E9DDCC] dark:border-[#3D352E]">
                     <button
                       onClick={() => setViewMode('grid')}
                       className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors ${
-                        viewMode === 'grid' ? 'bg-[#765541] text-white shadow-sm' : 'text-stone-500 hover:text-stone-800'
+                        viewMode === 'grid' ? 'bg-[#765541] dark:bg-[#C47D60] text-white shadow-sm' : 'text-stone-500 dark:text-[#9E9287] hover:text-stone-800 dark:hover:text-[#EDE6DE]'
                       }`}
                     >
                       <List className="w-3.5 h-3.5" />
@@ -202,7 +203,7 @@ const MainApp: React.FC = () => {
                     <button
                       onClick={() => setViewMode('map')}
                       className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors ${
-                        viewMode === 'map' ? 'bg-[#765541] text-white shadow-sm' : 'text-stone-500 hover:text-stone-800'
+                        viewMode === 'map' ? 'bg-[#765541] dark:bg-[#C47D60] text-white shadow-sm' : 'text-stone-500 dark:text-[#9E9287] hover:text-stone-800 dark:hover:text-[#EDE6DE]'
                       }`}
                     >
                       <Map className="w-3.5 h-3.5" />
@@ -215,11 +216,11 @@ const MainApp: React.FC = () => {
               {/* Results View (Grid or Map) */}
               {viewMode === 'grid' ? (
                 filteredProperties.length === 0 ? (
-                  <div className="bg-white rounded-3xl p-12 text-center border border-[#E9DDCC] space-y-3">
-                    <p className="font-bold text-sm text-[#34332F]">
+                  <div className="bg-white dark:bg-[#24201D] rounded-3xl p-12 text-center border border-[#E9DDCC] dark:border-[#3D352E] space-y-3">
+                    <p className="font-bold text-sm text-[#34332F] dark:text-[#EDE6DE]">
                       {language === 'ar' ? 'لا توجد نتائج تطابق فلاتر البحث الحالية' : 'No properties matched your current filters'}
                     </p>
-                    <p className="text-xs text-stone-500">
+                    <p className="text-xs text-stone-500 dark:text-[#9E9287]">
                       {language === 'ar' ? 'جرب توسيع نطاق الميزانية أو إزالة شرط الجامعة.' : 'Try expanding your budget slider or choosing all areas.'}
                     </p>
                   </div>
@@ -280,6 +281,9 @@ const MainApp: React.FC = () => {
 
         {/* Floating Misbah Table Lamp Assistant */}
         <MisbahWidget />
+
+        {/* Persistent Bottom Property Comparison Bar */}
+        <PersistentComparisonBar />
 
         {/* Modals */}
         {selectedProperty && (

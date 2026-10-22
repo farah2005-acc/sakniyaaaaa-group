@@ -1,7 +1,16 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
   :root {
+    --bg-primary: #F8F4EC;
+    --bg-surface: #FFFFFF;
+    --bg-surface-elevated: #F2EBE0;
+    --border-color: #E9DDCC;
+    --text-primary: #34332F;
+    --text-secondary: #765541;
+    --text-muted: #8C827A;
     --color-ivory: #F8F4EC;
     --color-oat: #E9DDCC;
     --color-sage: #A9B59A;
@@ -11,11 +20,29 @@
     --color-charcoal: #34332F;
   }
 
+  .dark {
+    --bg-primary: #191614;
+    --bg-surface: #24201D;
+    --bg-surface-elevated: #2D2723;
+    --border-color: #3D352E;
+    --text-primary: #EDE6DE;
+    --text-secondary: #D4BFA8;
+    --text-muted: #9E9287;
+    --color-ivory: #191614;
+    --color-oat: #3D352E;
+    --color-sage: #B4C2A5;
+    --color-olive: #80966B;
+    --color-terracotta: #D8896C;
+    --color-walnut: #D4BFA8;
+    --color-charcoal: #EDE6DE;
+  }
+
   body {
     font-family: 'Cairo', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-    background-color: #F8F4EC;
-    color: #34332F;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
     overflow-x: hidden;
+    transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease;
   }
 
   [dir="ltr"] {
@@ -29,23 +56,23 @@
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #F8F4EC;
+  background: var(--bg-primary);
 }
 ::-webkit-scrollbar-thumb {
-  background: #E9DDCC;
+  background: var(--border-color);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #C47D60;
+  background: var(--color-terracotta);
 }
 
 /* Soft ambient glow animations */
 @keyframes warm-glow {
   0%, 100% {
-    filter: drop-shadow(0 0 12px rgba(196, 125, 96, 0.45));
+    filter: drop-shadow(0 0 14px rgba(216, 137, 108, 0.45));
   }
   50% {
-    filter: drop-shadow(0 0 24px rgba(245, 178, 124, 0.7));
+    filter: drop-shadow(0 0 26px rgba(245, 178, 124, 0.8));
   }
 }
 
@@ -59,3 +86,8 @@
   z-index: 10;
   border-radius: 1rem;
 }
+
+.dark .leaflet-tile-pane {
+  filter: brightness(0.85) contrast(1.1) invert(0.9) hue-rotate(190deg);
+}
+

@@ -40,7 +40,7 @@ export const MobileFrameWrapper: React.FC<MobileFrameWrapperProps> = ({
       <div className="w-full max-w-[400px] h-[820px] bg-black rounded-[48px] p-3 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7)] border-4 border-stone-800 relative flex flex-col overflow-hidden">
         
         {/* Dynamic Island / Notch & Status Bar */}
-        <div className="h-8 w-full bg-[#F8F4EC] rounded-t-[38px] flex items-center justify-between px-6 pt-1 text-[11px] font-bold text-stone-800 shrink-0 z-30 select-none">
+        <div className="h-8 w-full bg-[#F8F4EC] dark:bg-[#191614] rounded-t-[38px] flex items-center justify-between px-6 pt-1 text-[11px] font-bold text-stone-800 dark:text-[#EDE6DE] shrink-0 z-30 select-none transition-colors">
           <span>9:41</span>
           <div className="w-24 h-4 bg-black rounded-full mx-auto" />
           <div className="flex items-center gap-1">
@@ -50,12 +50,12 @@ export const MobileFrameWrapper: React.FC<MobileFrameWrapperProps> = ({
         </div>
 
         {/* Scrollable Screen Content */}
-        <div className="flex-1 bg-[#F8F4EC] overflow-y-auto pb-20 relative">
+        <div className="flex-1 bg-[#F8F4EC] dark:bg-[#191614] overflow-y-auto pb-20 relative transition-colors">
           {children}
         </div>
 
         {/* Minimal Mobile Bottom Navigation Bar (Section 1 & 21) */}
-        <nav className="absolute bottom-3 left-3 right-3 h-16 bg-white/95 backdrop-blur-md rounded-3xl border border-[#E9DDCC] shadow-lg flex items-center justify-around px-2 z-30">
+        <nav className="absolute bottom-3 left-3 right-3 h-16 bg-white/95 dark:bg-[#24201D]/95 backdrop-blur-md rounded-3xl border border-[#E9DDCC] dark:border-[#3D352E] shadow-lg flex items-center justify-around px-2 z-30 transition-colors">
           <button
             onClick={() => setActiveTab('explore')}
             className={`flex flex-col items-center justify-center gap-0.5 text-[10px] font-medium transition-colors ${

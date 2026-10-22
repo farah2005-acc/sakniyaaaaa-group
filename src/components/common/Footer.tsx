@@ -6,17 +6,17 @@ export const Footer: React.FC = () => {
   const { language, setSearchFilter } = useApp();
 
   return (
-    <footer className="bg-[#E9DDCC]/40 border-t border-[#E9DDCC] text-[#765541] mt-20 pt-14 pb-12">
+    <footer className="bg-[#E9DDCC]/40 dark:bg-[#191614] border-t border-[#E9DDCC] dark:border-[#3D352E] text-[#765541] dark:text-[#D4BFA8] mt-20 pt-14 pb-12 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           
           {/* Brand Info */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-xl bg-[#765541] text-[#F8F4EC] flex items-center justify-center font-bold text-lg font-serif">
+              <div className="w-8 h-8 rounded-xl bg-[#765541] dark:bg-[#C47D60] text-[#F8F4EC] dark:text-[#191614] flex items-center justify-center font-bold text-lg font-serif">
                 س
               </div>
-              <span className="text-xl font-bold font-serif text-[#765541]">
+              <span className="text-xl font-bold font-serif text-[#765541] dark:text-[#EDE6DE]">
                 {language === 'ar' ? 'سَكَنِيّة' : 'Sakniya'}
               </span>
             </div>
@@ -139,11 +139,11 @@ export const Footer: React.FC = () => {
                 ? 'عمولة المنصة: ٥٪ فقط لعقود الفصول الدراسية والسنوية، و١٥٪ للإقامات القصيرة. لا رسوم خفية أبداً.'
                 : 'Platform commission: 5% for semester & annual leases, 15% for 2-3 day short stays. Zero hidden markups.'}
             </p>
-            <div className="p-3 bg-white/70 rounded-xl border border-[#E9DDCC] text-xs">
-              <span className="font-semibold block text-[#765541]">
+            <div className="p-3 bg-white/70 dark:bg-[#24201D] rounded-xl border border-[#E9DDCC] dark:border-[#3D352E] text-xs">
+              <span className="font-semibold block text-[#765541] dark:text-[#EDE6DE]">
                 {language === 'ar' ? 'مصباح (مساعدك الدائم)' : 'Misbah Assistant'}
               </span>
-              <span className="text-[11px] text-stone-500">
+              <span className="text-[11px] text-stone-500 dark:text-[#9E9287]">
                 {language === 'ar' ? 'انقر على المصباح بأسفل الشاشة في أي وقت.' : 'Click the glowing lamp widget anytime.'}
               </span>
             </div>
@@ -152,7 +152,7 @@ export const Footer: React.FC = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 pt-6 border-t border-[#E9DDCC] flex flex-col sm:flex-row items-center justify-between text-xs text-stone-500 gap-4">
+        <div className="mt-12 pt-6 border-t border-[#E9DDCC] dark:border-[#3D352E] flex flex-col sm:flex-row items-center justify-between text-xs text-stone-500 dark:text-[#9E9287] gap-4">
           <p>
             © 2026 Sakniya | سكنية. {language === 'ar' ? 'جميع الحقوق محفوظة في جمهورية مصر العربية' : 'All rights reserved in Egypt.'}
           </p>

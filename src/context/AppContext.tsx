@@ -52,13 +52,19 @@ interface AppContextType {
   };
   notification: { message: string; type: 'success' | 'info' | 'error' } | null;
   
+  theme: 'light' | 'dark';
+  isMisbahChatOpen: boolean;
+  
   // Actions
   setUser: (u: User | null) => void;
   setRole: (r: UserRole) => void;
   setLanguage: (lang: Language) => void;
+  toggleTheme: () => void;
+  setIsMisbahChatOpen: (open: boolean) => void;
   toggleFavorite: (propertyId: string) => void;
   toggleCompare: (propertyId: string) => void;
   removeCompare: (propertyId: string) => void;
+  clearCompare: () => void;
   setActiveModal: (m: string | null) => void;
   setSelectedProperty: (p: PropertyListing | null) => void;
   setSelectedBooking: (b: Booking | null) => void;
@@ -200,6 +206,30 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [searchFilter, setSearchFilter] = useState(defaultFilters);
   const [notification, setNotification] = useState<{ message: string; type: 'success' | 'info' | 'error' } | null>(null);
 
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('sakniya_theme');
+      if (saved === 'light' || saved === 'dark') return saved;
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return 'dark';
+      }
+    }
+    return 'light';
+  });
+
+  const [isMisbahChatOpen, setIsMisbahChatOpen] = useState<boolean>(false);
+
+  // Sync theme with HTML document class and localStorage
+  useEffect(() => {
+    const root = document.documentElement;
+    if (theme === 'dark') {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+    localStorage.setItem('sakniya_theme', theme);
+  }, [theme]);
+
   // Sync language with HTML document dir
   useEffect(() => {
     document.documentElement.lang = language;
@@ -266,6 +296,14 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     setTimeout(() => {
       setNotification(null);
     }, 4000);
+  };
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+  };
+
+  const clearCompare = () => {
+    setComparedProperties([]);
   };
 
   const toggleFavorite = (propertyId: string) => {
@@ -452,12 +490,17 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         isMobileDeviceMode,
         searchFilter,
         notification,
+        theme,
+        isMisbahChatOpen,
         setUser,
         setRole,
         setLanguage,
+        toggleTheme,
+        setIsMisbahChatOpen,
         toggleFavorite,
         toggleCompare,
         removeCompare,
+        clearCompare,
         setActiveModal,
         setSelectedProperty,
         setSelectedBooking,

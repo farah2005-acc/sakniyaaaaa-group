@@ -1,42 +1,51 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useApp } from '../../context/AppContext';
-import { Sparkles, X, Send, Compass, Users, HelpCircle, Building2, ChevronDown, RefreshCw } from 'lucide-react';
+import { Sparkles, X, Send } from 'lucide-react';
+import { RealisticLampIcon } from './RealisticLampIcon';
 
 export const MisbahWidget: React.FC = () => {
-  const { language, setSearchFilter, setActiveModal } = useApp();
-  const [isOpen, setIsOpen] = useState(false);
-  const [isLampOn, setIsLampOn] = useState(false);
+  const {
+    language,
+    setSearchFilter,
+    setActiveModal,
+    isMisbahChatOpen,
+    setIsMisbahChatOpen,
+  } = useApp();
+
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<Array<{ sender: 'misbah' | 'user'; text: string; time: string }>>([
     {
       sender: 'misbah',
       text: language === 'ar'
-        ? 'أهلاً بك! أنا مصباح (مصباحك الدافئ في سكنية) 🪔. اضغط على المصباح لتنيره، وأنا جاهز لمساعدتك في العثور على سكن مريح، أو فهم درجات التوافق، أو حساب عمولة المنصة.'
-        : "Hello! I'm Misbah, your cozy housing lamp guide 🪔. Tap my lamp to light up! I can help you discover rooms, calculate commute times, or match with ideal roommates.",
+        ? 'أهلاً بك! أنا مصباح، مرشدك الدافئ في سكنية. اضغط على أباجورة المكتب لتنير، وأنا جاهز لمساعدتك في العثور على سكن مريح، أو فهم درجات التوافق، أو حساب عمولة المنصة.'
+        : "Hello! I'm Misbah, your cozy housing bedside lamp guide. Tap my table lamp to light up! I can help you discover rooms, calculate commute times, or match with ideal roommates.",
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     },
   ]);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  // Auto-scroll on new messages
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, isLoading]);
+    if (isMisbahChatOpen) {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages, isLoading, isMisbahChatOpen]);
+
+  // Lamp ON/OFF state strictly mirrors the chat state
+  const isLampOn = isMisbahChatOpen;
 
   const handleToggleLamp = () => {
-    setIsLampOn((prev) => !prev);
-    if (!isOpen) {
-      setIsOpen(true);
-    }
+    setIsMisbahChatOpen(!isMisbahChatOpen);
   };
 
   const handleSend = async (textToSend?: string) => {
     const text = textToSend || inputMessage.trim();
     if (!text || isLoading) return;
 
-    if (!isLampOn) {
-      setIsLampOn(true);
+    if (!isMisbahChatOpen) {
+      setIsMisbahChatOpen(true);
     }
 
     const userMsg = {
@@ -70,7 +79,7 @@ export const MisbahWidget: React.FC = () => {
           time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         },
       ]);
-    } catch (err) {
+    } catch {
       setMessages((prev) => [
         ...prev,
         {
@@ -123,44 +132,55 @@ export const MisbahWidget: React.FC = () => {
   return (
     <aside aria-label="Misbah Assistant" className="fixed bottom-6 left-6 z-40 flex flex-col items-start gap-3">
       {/* Expanded Chat Drawer */}
-      {isOpen && (
+      {isMisbahChatOpen && (
         <div
-          className="w-[360px] sm:w-[400px] h-[520px] bg-[#F8F4EC] border border-[#E9DDCC] rounded-2xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300"
-          style={{ boxShadow: '0 20px 40px -10px rgba(118, 85, 65, 0.18)' }}
+          className="w-[360px] sm:w-[400px] h-[520px] bg-[#F8F4EC] dark:bg-[#191614] border border-[#E9DDCC] dark:border-[#3D352E] rounded-3xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 animate-in fade-in zoom-in-95"
+          style={{ boxShadow: '0 24px 48px -12px rgba(118, 85, 65, 0.28)' }}
         >
           {/* Header */}
-          <div className="bg-[#765541] text-[#F8F4EC] px-4 py-3 flex items-center justify-between">
+          <div className="bg-[#765541] dark:bg-[#2D2723] text-[#F8F4EC] px-4 py-3 flex items-center justify-between border-b border-[#3D352E]/30">
             <div className="flex items-center gap-3">
+              {/* Mini Lamp in Header */}
               <div
-                className={`w-9 h-9 rounded-full overflow-hidden border-2 transition-all duration-500 cursor-pointer ${
-                  isLampOn ? 'border-[#C47D60] ring-4 ring-[#C47D60]/30 shadow-md scale-105' : 'border-[#E9DDCC]/40 opacity-80'
+                className={`relative p-1 rounded-2xl transition-all duration-500 cursor-pointer ${
+                  isLampOn
+                    ? 'bg-amber-400/20 ring-2 ring-amber-400/50 shadow-md scale-105'
+                    : 'bg-stone-800/20 opacity-70'
                 }`}
-                onClick={() => setIsLampOn(!isLampOn)}
-                title={language === 'ar' ? 'اضغط لتشغيل/إطفاء ضوء مصباح' : 'Tap to toggle lamp light'}
+                onClick={handleToggleLamp}
+                title={language === 'ar' ? 'انقر لإغلاق المحادثة وإطفاء المصباح' : 'Tap to close chat and extinguish lamp'}
               >
-                <img
-                  src="/src/assets/images/sakniya_misbah_lamp_1792632265594.jpg"
-                  alt="Misbah"
-                  className="w-full h-full object-cover"
-                />
+                <RealisticLampIcon isOn={isLampOn} size={32} />
               </div>
+
               <div>
                 <div className="flex items-center gap-1.5 font-bold text-sm">
                   <span>{language === 'ar' ? 'مصباح' : 'Misbah'}</span>
-                  <span className={`text-[10px] px-1.5 py-0.5 rounded-full transition-colors ${isLampOn ? 'bg-[#C47D60] text-white' : 'bg-stone-600 text-stone-300'}`}>
-                    {isLampOn ? (language === 'ar' ? 'مُضاء ومستعد' : 'Glowing') : (language === 'ar' ? 'انقر لإضاءتي' : 'Tap to glow')}
+                  <span
+                    className={`text-[10px] px-2 py-0.5 rounded-full font-semibold transition-all duration-500 flex items-center gap-1 ${
+                      isLampOn
+                        ? 'bg-amber-500 text-stone-900 shadow-sm'
+                        : 'bg-stone-600 text-stone-300'
+                    }`}
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                    {isLampOn
+                      ? (language === 'ar' ? 'المصباح مضيء' : 'Lamp Illuminated')
+                      : (language === 'ar' ? 'المصباح مطفأ' : 'Lamp Off')}
                   </span>
                 </div>
-                <p className="text-[11px] text-[#E9DDCC]/80">
+                <p className="text-[11px] text-[#E9DDCC]/80 dark:text-[#D4BFA8]">
                   {language === 'ar' ? 'مرشدك الذكي للسكن والزملاء' : 'Your cozy bohemian housing guide'}
                 </p>
               </div>
             </div>
+
             <div className="flex items-center gap-1">
               <button
-                onClick={() => setIsOpen(false)}
-                className="p-1 rounded-lg hover:bg-white/10 text-[#F8F4EC]/80 hover:text-white transition-colors"
-                aria-label="Close Misbah Chat"
+                type="button"
+                onClick={() => setIsMisbahChatOpen(false)}
+                className="p-1.5 rounded-xl hover:bg-white/10 text-[#F8F4EC]/80 hover:text-white transition-colors"
+                aria-label={language === 'ar' ? 'إغلاق المحادثة' : 'Close Misbah Chat'}
               >
                 <X className="w-5 h-5" />
               </button>
@@ -168,21 +188,22 @@ export const MisbahWidget: React.FC = () => {
           </div>
 
           {/* Quick Action Chips */}
-          <div className="bg-[#E9DDCC]/30 px-3 py-2 flex items-center gap-1.5 overflow-x-auto text-xs border-b border-[#E9DDCC]">
+          <div className="bg-[#E9DDCC]/30 dark:bg-[#24201D]/70 px-3 py-2 flex items-center gap-1.5 overflow-x-auto text-xs border-b border-[#E9DDCC] dark:border-[#3D352E]">
             {quickActions.map((qa, idx) => (
               <button
                 key={idx}
+                type="button"
                 onClick={qa.action}
-                className="whitespace-nowrap px-2.5 py-1 bg-white hover:bg-[#F8F4EC] text-[#765541] rounded-full border border-[#E9DDCC] transition-colors text-[11px] font-medium shrink-0 flex items-center gap-1"
+                className="whitespace-nowrap px-2.5 py-1 bg-white dark:bg-[#2D2723] hover:bg-[#F8F4EC] dark:hover:bg-[#3D352E] text-[#765541] dark:text-[#D4BFA8] rounded-full border border-[#E9DDCC] dark:border-[#3D352E] transition-colors text-[11px] font-medium shrink-0 flex items-center gap-1 shadow-xs"
               >
-                <Sparkles className="w-3 h-3 text-[#C47D60]" />
+                <Sparkles className="w-3 h-3 text-[#C47D60] dark:text-[#D8896C]" />
                 {language === 'ar' ? qa.labelAr : qa.labelEn}
               </button>
             ))}
           </div>
 
           {/* Chat Messages */}
-          <div className="flex-1 p-4 overflow-y-auto space-y-3 bg-[#F8F4EC]/60">
+          <div className="flex-1 p-4 overflow-y-auto space-y-3 bg-[#F8F4EC]/60 dark:bg-[#191614]/80">
             {messages.map((msg, i) => (
               <div
                 key={i}
@@ -193,13 +214,13 @@ export const MisbahWidget: React.FC = () => {
                 <div
                   className={`max-w-[85%] px-3.5 py-2.5 rounded-2xl text-xs leading-relaxed ${
                     msg.sender === 'user'
-                      ? 'bg-[#C47D60] text-white rounded-br-none shadow-sm'
-                      : 'bg-white text-[#34332F] border border-[#E9DDCC] rounded-bl-none shadow-sm'
+                      ? 'bg-[#C47D60] dark:bg-[#D8896C] text-white rounded-br-none shadow-sm'
+                      : 'bg-white dark:bg-[#24201D] text-[#34332F] dark:text-[#EDE6DE] border border-[#E9DDCC] dark:border-[#3D352E] rounded-bl-none shadow-sm'
                   }`}
                 >
                   {msg.text}
                 </div>
-                <span className="text-[10px] text-stone-400 mt-0.5 px-1">{msg.time}</span>
+                <span className="text-[10px] text-stone-400 dark:text-stone-500 mt-0.5 px-1">{msg.time}</span>
               </div>
             ))}
             {isLoading && (
@@ -207,7 +228,7 @@ export const MisbahWidget: React.FC = () => {
                 <span className="w-2 h-2 rounded-full bg-[#C47D60] animate-bounce" />
                 <span className="w-2 h-2 rounded-full bg-[#C47D60] animate-bounce delay-100" />
                 <span className="w-2 h-2 rounded-full bg-[#C47D60] animate-bounce delay-200" />
-                <span className="text-[11px] text-[#765541]">
+                <span className="text-[11px] text-[#765541] dark:text-[#D4BFA8]">
                   {language === 'ar' ? 'مصباح يفكر ويبحث...' : 'Misbah is checking details...'}
                 </span>
               </div>
@@ -221,7 +242,7 @@ export const MisbahWidget: React.FC = () => {
               e.preventDefault();
               handleSend();
             }}
-            className="p-3 bg-white border-t border-[#E9DDCC] flex items-center gap-2"
+            className="p-3 bg-white dark:bg-[#24201D] border-t border-[#E9DDCC] dark:border-[#3D352E] flex items-center gap-2"
           >
             <input
               type="text"
@@ -232,12 +253,12 @@ export const MisbahWidget: React.FC = () => {
                   ? 'اسأل مصباح عن السكن، الجامعة، أو الزملاء...'
                   : 'Ask Misbah about housing, campus commute, roommates...'
               }
-              className="flex-1 px-3 py-2 text-xs bg-[#F8F4EC] border border-[#E9DDCC] rounded-xl focus:outline-none focus:ring-1 focus:ring-[#C47D60] text-[#34332F]"
+              className="flex-1 px-3 py-2 text-xs bg-[#F8F4EC] dark:bg-[#191614] border border-[#E9DDCC] dark:border-[#3D352E] rounded-xl focus:outline-none focus:ring-1 focus:ring-[#C47D60] text-[#34332F] dark:text-[#EDE6DE]"
             />
             <button
               type="submit"
               disabled={isLoading || !inputMessage.trim()}
-              className="p-2 bg-[#765541] hover:bg-[#604230] disabled:opacity-40 text-white rounded-xl transition-colors shrink-0"
+              className="p-2 bg-[#765541] hover:bg-[#604230] dark:bg-[#C47D60] dark:hover:bg-[#b06a4e] disabled:opacity-40 text-white rounded-xl transition-colors shrink-0"
               aria-label="Send"
             >
               <Send className="w-4 h-4" />
@@ -248,38 +269,38 @@ export const MisbahWidget: React.FC = () => {
 
       {/* Floating Interactive Lamp Button */}
       <button
+        type="button"
         onClick={handleToggleLamp}
-        className={`group relative flex items-center gap-2.5 px-3.5 py-2.5 rounded-full border shadow-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#C47D60] ${
+        aria-expanded={isMisbahChatOpen}
+        className={`group relative flex items-center gap-3 px-3.5 py-2.5 rounded-full border shadow-2xl transition-all duration-500 focus:outline-none focus:ring-2 focus:ring-[#C47D60] ${
           isLampOn
-            ? 'bg-[#F8F4EC] border-[#C47D60] ring-4 ring-[#C47D60]/20 animate-glow'
-            : 'bg-white hover:bg-[#F8F4EC] border-[#E9DDCC]'
+            ? 'bg-[#F8F4EC] dark:bg-[#2D2723] border-[#C47D60] dark:border-[#D8896C] ring-4 ring-amber-400/30 dark:ring-amber-400/20 shadow-amber-500/20'
+            : 'bg-white dark:bg-[#24201D] hover:bg-[#F8F4EC] dark:hover:bg-[#2D2723] border-[#E9DDCC] dark:border-[#3D352E]'
         }`}
-        title={language === 'ar' ? 'مصباح — مساعد سكنية الذكي' : 'Misbah — Sakniya Assistant'}
+        title={
+          isLampOn
+            ? (language === 'ar' ? 'مصباح مُضاء ومفتوح · انقر للإطفاء والإغلاق' : 'Misbah lit & open · Tap to turn off')
+            : (language === 'ar' ? 'مصباح سكنية · انقر لإضاءة الأباجورة وبدء المحادثة' : 'Misbah lamp · Tap to light up & chat')
+        }
       >
-        <div className="relative w-8 h-8 rounded-full overflow-hidden border border-[#C47D60]/40">
-          <img
-            src="/src/assets/images/sakniya_misbah_lamp_1792632265594.jpg"
-            alt="Misbah"
-            className="w-full h-full object-cover"
-          />
-          {/* Subtle light aura */}
-          {isLampOn && (
-            <div className="absolute inset-0 bg-[#C47D60]/20 mix-blend-color-burn pointer-events-none" />
-          )}
+        {/* Realistic Bedside Table Lamp Icon with smooth ON/OFF glow */}
+        <div className="relative flex items-center justify-center">
+          <RealisticLampIcon isOn={isLampOn} size={38} />
         </div>
+
         <div className="text-left rtl:text-right hidden sm:block">
-          <div className="flex items-center gap-1.5 text-xs font-bold text-[#765541]">
+          <div className="flex items-center gap-1.5 text-xs font-bold text-[#765541] dark:text-[#EDE6DE]">
             <span>{language === 'ar' ? 'مصباح' : 'Misbah'}</span>
             <span
-              className={`w-2 h-2 rounded-full ${
-                isLampOn ? 'bg-[#C47D60] animate-ping' : 'bg-stone-300'
+              className={`w-2 h-2 rounded-full transition-all duration-500 ${
+                isLampOn ? 'bg-amber-400 ring-2 ring-amber-400/50 shadow-sm animate-pulse' : 'bg-stone-300 dark:bg-stone-600'
               }`}
             />
           </div>
-          <p className="text-[10px] text-stone-500">
+          <p className="text-[10px] text-stone-500 dark:text-[#9E9287] transition-colors">
             {isLampOn
-              ? (language === 'ar' ? 'الضوء مُضاء · اضغط للمحادثة' : 'Lamp lit · Tap to chat')
-              : (language === 'ar' ? 'اضغط للإضاءة' : 'Tap to light')}
+              ? (language === 'ar' ? 'المصباح مُضاء · المحادثة نشطة' : 'Lamp lit · Chat active')
+              : (language === 'ar' ? 'انقر لإضاءة المصباح' : 'Tap to light up')}
           </p>
         </div>
       </button>
