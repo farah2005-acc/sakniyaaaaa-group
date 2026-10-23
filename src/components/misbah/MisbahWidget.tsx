@@ -7,6 +7,7 @@ export const MisbahWidget: React.FC = () => {
   const {
     language,
     setSearchFilter,
+    activeModal,
     setActiveModal,
     isMisbahChatOpen,
     setIsMisbahChatOpen,
@@ -34,9 +35,12 @@ export const MisbahWidget: React.FC = () => {
   }, [messages, isLoading, isMisbahChatOpen]);
 
   // Lamp ON/OFF state strictly mirrors the chat state
-  const isLampOn = isMisbahChatOpen;
+  const isLampOn = isMisbahChatOpen || activeModal === 'chat';
 
   const handleToggleLamp = () => {
+    if (activeModal === 'chat') {
+      setActiveModal(null);
+    }
     setIsMisbahChatOpen(!isMisbahChatOpen);
   };
 

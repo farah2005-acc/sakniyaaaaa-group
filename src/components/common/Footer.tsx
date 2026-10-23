@@ -14,27 +14,27 @@ export const Footer: React.FC = () => {
           {/* Brand Info */}
           <div className="space-y-4">
             <SakniyaLogo size="sm" variant="app_icon" showText={true} />
-            <p className="text-xs text-[#765541]/80 leading-relaxed">
+            <p className="text-xs text-[#765541]/80 dark:text-[#D4BFA8] leading-relaxed">
               {language === 'ar'
                 ? 'منصة السكن التشاركي ومطابقة رفقاء السكن الأولى للطلاب والموظفين في مصر. بيئة دافئة، عقود موثوقة، وأمان متكامل.'
                 : 'Egypt’s premier housing & roommate compatibility platform for university students and professionals. Cozy bohemian living, verified stays, and peace of mind.'}
             </p>
-            <div className="flex items-center gap-2 text-xs text-[#697A58] font-semibold">
-              <ShieldCheck className="w-4 h-4 text-[#697A58]" />
+            <div className="flex items-center gap-2 text-xs text-[#697A58] dark:text-[#A9B59A] font-semibold">
+              <ShieldCheck className="w-4 h-4 text-[#697A58] dark:text-[#A9B59A]" />
               <span>{language === 'ar' ? 'عقود موثقة ودفع آمن عبر إنستاباي والمحافظ' : 'Verified leases & safe payments via InstaPay & Wallets'}</span>
             </div>
           </div>
 
           {/* Quick Governorates & Cities */}
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-wider text-[#765541] mb-4">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-[#765541] dark:text-[#EDE6DE] mb-4">
               {language === 'ar' ? 'مناطق السكن النشطة' : 'Active Student Hubs'}
             </h4>
-            <ul className="space-y-2 text-xs text-[#765541]/80">
+            <ul className="space-y-2 text-xs text-[#765541]/80 dark:text-[#D4BFA8]">
               <li>
                 <button
                   onClick={() => setSearchFilter((prev) => ({ ...prev, city: 'Alexandria', neighborhood: 'Smouha' }))}
-                  className="hover:text-[#C47D60] transition-colors"
+                  className="hover:text-[#C47D60] dark:hover:text-[#D8896C] transition-colors"
                 >
                   {language === 'ar' ? 'الإسكندرية · سموحة والشاطبي والأزارطة' : 'Alexandria · Smouha, Shatby & Azarita'}
                 </button>
@@ -42,7 +42,7 @@ export const Footer: React.FC = () => {
               <li>
                 <button
                   onClick={() => setSearchFilter((prev) => ({ ...prev, city: 'Cairo', neighborhood: 'Maadi' }))}
-                  className="hover:text-[#C47D60] transition-colors"
+                  className="hover:text-[#C47D60] dark:hover:text-[#D8896C] transition-colors"
                 >
                   {language === 'ar' ? 'القاهرة · المعادي والدقي ومدينة نصر' : 'Cairo · Maadi, Dokki & Nasr City'}
                 </button>
@@ -50,7 +50,7 @@ export const Footer: React.FC = () => {
               <li>
                 <button
                   onClick={() => setSearchFilter((prev) => ({ ...prev, city: '6th of October' }))}
-                  className="hover:text-[#C47D60] transition-colors"
+                  className="hover:text-[#C47D60] dark:hover:text-[#D8896C] transition-colors"
                 >
                   {language === 'ar' ? 'السادس من أكتوبر والشيخ زايد' : '6th of October & Sheikh Zayed'}
                 </button>
@@ -58,7 +58,7 @@ export const Footer: React.FC = () => {
               <li>
                 <button
                   onClick={() => setSearchFilter((prev) => ({ ...prev, city: 'Tanta' }))}
-                  className="hover:text-[#C47D60] transition-colors"
+                  className="hover:text-[#C47D60] dark:hover:text-[#D8896C] transition-colors"
                 >
                   {language === 'ar' ? 'طنطا والدلتا (المجمع الطبي)' : 'Tanta & Delta Campuses'}
                 </button>
@@ -66,7 +66,7 @@ export const Footer: React.FC = () => {
               <li>
                 <button
                   onClick={() => setSearchFilter((prev) => ({ ...prev, city: 'New Borg El Arab' }))}
-                  className="hover:text-[#C47D60] transition-colors"
+                  className="hover:text-[#C47D60] dark:hover:text-[#D8896C] transition-colors"
                 >
                   {language === 'ar' ? 'برج العرب الجديدة (الجامعة اليابانية)' : 'New Borg El Arab (E-JUST)'}
                 </button>
@@ -76,14 +76,14 @@ export const Footer: React.FC = () => {
 
           {/* Universites Directory */}
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-wider text-[#765541] mb-4">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-[#765541] dark:text-[#EDE6DE] mb-4">
               {language === 'ar' ? 'الجامعات المعتمدة' : 'Campus Direct Commutes'}
             </h4>
-            <ul className="space-y-2 text-xs text-[#765541]/80">
+            <ul className="space-y-2 text-xs text-[#765541]/80 dark:text-[#D4BFA8]">
               <li>
                 <button
                   onClick={() => setSearchFilter((prev) => ({ ...prev, universityId: 'pua' }))}
-                  className="hover:text-[#C47D60] transition-colors"
+                  className="hover:text-[#C47D60] dark:hover:text-[#D8896C] transition-colors"
                 >
                   {language === 'ar' ? 'جامعة فاروس بالإسكندرية (PUA)' : 'Pharos University in Alexandria (PUA)'}
                 </button>
@@ -91,7 +91,7 @@ export const Footer: React.FC = () => {
               <li>
                 <button
                   onClick={() => setSearchFilter((prev) => ({ ...prev, universityId: 'alex_shatby' }))}
-                  className="hover:text-[#C47D60] transition-colors"
+                  className="hover:text-[#C47D60] dark:hover:text-[#D8896C] transition-colors"
                 >
                   {language === 'ar' ? 'جامعة الإسكندرية (الشاطبي والأزارطة)' : 'Alexandria University (Shatby & Medical)'}
                 </button>
@@ -99,7 +99,7 @@ export const Footer: React.FC = () => {
               <li>
                 <button
                   onClick={() => setSearchFilter((prev) => ({ ...prev, universityId: 'cairo_uni' }))}
-                  className="hover:text-[#C47D60] transition-colors"
+                  className="hover:text-[#C47D60] dark:hover:text-[#D8896C] transition-colors"
                 >
                   {language === 'ar' ? 'جامعة القاهرة (الجيزة)' : 'Cairo University (Giza)'}
                 </button>
@@ -107,7 +107,7 @@ export const Footer: React.FC = () => {
               <li>
                 <button
                   onClick={() => setSearchFilter((prev) => ({ ...prev, universityId: 'auc' }))}
-                  className="hover:text-[#C47D60] transition-colors"
+                  className="hover:text-[#C47D60] dark:hover:text-[#D8896C] transition-colors"
                 >
                   {language === 'ar' ? 'الجامعة الأمريكية والألمانية بالقاهرة' : 'AUC & GUC Campuses'}
                 </button>
@@ -115,7 +115,7 @@ export const Footer: React.FC = () => {
               <li>
                 <button
                   onClick={() => setSearchFilter((prev) => ({ ...prev, universityId: 'tanta_uni' }))}
-                  className="hover:text-[#C47D60] transition-colors"
+                  className="hover:text-[#C47D60] dark:hover:text-[#D8896C] transition-colors"
                 >
                   {language === 'ar' ? 'جامعة طنطا والمجمع الطبي' : 'Tanta University Medical Campus'}
                 </button>
@@ -125,10 +125,10 @@ export const Footer: React.FC = () => {
 
           {/* Transparent Trust & Commission */}
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-wider text-[#765541] mb-4">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-[#765541] dark:text-[#EDE6DE] mb-4">
               {language === 'ar' ? 'الشفافية والأمان' : 'Transparency & Safety'}
             </h4>
-            <p className="text-xs text-[#765541]/80 leading-relaxed mb-3">
+            <p className="text-xs text-[#765541]/80 dark:text-[#D4BFA8] leading-relaxed mb-3">
               {language === 'ar'
                 ? 'عمولة المنصة: ٥٪ فقط لعقود الفصول الدراسية والسنوية، و١٥٪ للإقامات القصيرة. لا رسوم خفية أبداً.'
                 : 'Platform commission: 5% for semester & annual leases, 15% for 2-3 day short stays. Zero hidden markups.'}
