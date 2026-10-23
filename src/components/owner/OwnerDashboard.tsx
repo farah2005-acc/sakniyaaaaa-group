@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
-import { PropertyListing } from '../../types';
+import { PropertyListing, Booking } from '../../types';
+import { ReviewModal } from '../reviews/ReviewModal';
+import { UserReviewsList } from '../reviews/UserReviewsList';
 import {
   Building2,
   PlusCircle,
@@ -16,6 +18,7 @@ import {
   PauseCircle,
   PlayCircle,
   Sparkles,
+  Star,
 } from 'lucide-react';
 
 interface OwnerDashboardProps {
@@ -32,12 +35,15 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({
     language,
     properties,
     bookings,
+    reviews,
     updateBookingStatus,
     updateListingStatus,
     setActiveChatRecipient,
     setActiveModal,
     showNotification,
   } = useApp();
+
+  const [reviewingBooking, setReviewingBooking] = useState<Booking | null>(null);
 
   const myProperties = properties.filter(
     (p) => p.ownerId === user?.id || p.ownerId === 'owner-1'
@@ -74,22 +80,29 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({
     <div className="space-y-8">
       {/* Host Welcome & Primary Stats */}
       <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#E9DDCC] shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-[11px] font-bold text-[#697A58] bg-[#697A58]/10 px-2.5 py-0.5 rounded-full">
-              {language === 'ar' ? 'منطقة ملاك سكنية' : 'Host Portal'}
-            </span>
-            <span className="text-stone-300">·</span>
-            <span className="text-xs text-stone-500">{user?.name}</span>
+        <div className="flex items-center gap-4">
+          <img
+            src={user?.avatar || '/src/assets/images/avatar_yomna_landlord_1792715698491.jpg'}
+            alt={user?.name || 'Yomna'}
+            className="w-16 h-16 rounded-2xl object-cover border-2 border-[#C47D60] shadow-sm shrink-0"
+          />
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-[11px] font-bold text-[#697A58] bg-[#697A58]/10 px-2.5 py-0.5 rounded-full">
+                {language === 'ar' ? 'منطقة ملاك سكنية' : 'Host Portal'}
+              </span>
+              <span className="text-stone-300">·</span>
+              <span className="text-xs font-semibold text-[#765541]">{user?.name || 'Yomna'}</span>
+            </div>
+            <h1 className="text-2xl font-bold font-serif text-[#34332F]">
+              {language === 'ar' ? 'لوحة تحكم إدارة السكن وتأجير الغرف' : 'Property & Booking Management'}
+            </h1>
+            <p className="text-xs text-stone-500 mt-1">
+              {language === 'ar'
+                ? 'إدارة العقارات، استقبال طلبات الطلاب، ومتابعة التحويلات المالية وتقييم المستأجرين'
+                : 'Manage listings, review student requests, track net earnings, and evaluate tenants'}
+            </p>
           </div>
-          <h1 className="text-2xl font-bold font-serif text-[#34332F]">
-            {language === 'ar' ? 'لوحة تحكم إدارة السكن وتأجير الغرف' : 'Property & Booking Management'}
-          </h1>
-          <p className="text-xs text-stone-500 mt-1">
-            {language === 'ar'
-              ? 'إدارة العقارات، استقبال طلبات الطلاب، ومتابعة التحويلات المالية عبر إنستاباي والمحافظ'
-              : 'Manage listings, review student requests, and track verified net earnings'}
-          </p>
         </div>
 
         <button
@@ -180,6 +193,23 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({
                     <span className="block text-[10px] text-stone-400">{b.paymentMethod}</span>
                   </div>
 
+                  {b.status === 'confirmed' && (
+                    reviews.some((r) => r.bookingId === b.id && r.reviewerId === user?.id) ? (
+                      <span className="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-semibold text-[#697A58] bg-[#697A58]/10 rounded-xl border border-[#697A58]/20">
+                        <CheckCircle2 className="w-3.5 h-3.5" />
+                        <span>{language === 'ar' ? 'تم تقييم المستأجر' : 'Tenant Reviewed'}</span>
+                      </span>
+                    ) : (
+                      <button
+                        onClick={() => setReviewingBooking(b)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#C47D60] hover:bg-[#b06a4e] text-white text-xs font-bold rounded-xl transition-colors shadow-sm"
+                      >
+                        <Star className="w-3.5 h-3.5 fill-current" />
+                        <span>{language === 'ar' ? 'تقييم المستأجر' : 'Rate Tenant'}</span>
+                      </button>
+                    )
+                  )}
+
                   {b.status === 'pending_owner' && (
                     <div className="flex items-center gap-2">
                       <button
@@ -202,7 +232,7 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({
                       setActiveChatRecipient({
                         id: b.tenantId,
                         name: b.tenantName,
-                        avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80',
+                        avatar: '/src/assets/images/avatar_nora_tenant_1792715698432.jpg',
                       });
                       setActiveModal('chat');
                     }}
@@ -291,6 +321,22 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({
           ))}
         </div>
       </div>
+
+      {/* Landlord's Received Reviews from Tenants */}
+      <UserReviewsList
+        targetUserId={user?.id || 'owner-1'}
+        targetRole="owner"
+        targetName={user?.name || 'Yomna'}
+      />
+
+      {/* Review Tenant Modal */}
+      {reviewingBooking && (
+        <ReviewModal
+          booking={reviewingBooking}
+          onClose={() => setReviewingBooking(null)}
+          onSuccess={() => setReviewingBooking(null)}
+        />
+      )}
     </div>
   );
 };

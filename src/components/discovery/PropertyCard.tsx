@@ -1,7 +1,7 @@
 import React from 'react';
 import { PropertyListing } from '../../types';
 import { useApp } from '../../context/AppContext';
-import { Heart, ShieldCheck, MapPin, Scale, Clock, Check } from 'lucide-react';
+import { Heart, ShieldCheck, MapPin, Scale, Clock } from 'lucide-react';
 import { StarRating } from '../common/StarRating';
 
 interface PropertyCardProps {
@@ -48,38 +48,36 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property, onSelect }
 
           {/* Action cluster: Compare Checkbox & Favorite Heart */}
           <div className="flex items-center gap-2 pointer-events-auto">
-            {/* Compare Checkbox Pill */}
-            <label
+            {/* Justice Scales Comparison Button */}
+            <button
+              type="button"
               onClick={(e) => {
                 e.stopPropagation();
+                toggleCompare(property.id);
               }}
-              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-full backdrop-blur-md cursor-pointer transition-all duration-200 select-none border text-xs font-semibold shadow-sm ${
+              aria-label={
                 isCompared
-                  ? 'bg-[#765541] dark:bg-[#3D352E] text-white border-[#765541] ring-2 ring-[#C47D60]/40'
-                  : 'bg-white/90 dark:bg-[#24201D]/90 hover:bg-white text-stone-700 dark:text-stone-300 border-[#E9DDCC]/80 dark:border-[#3D352E]'
+                  ? (language === 'ar' ? 'إزالة من المقارنة' : 'Remove from comparison')
+                  : (language === 'ar' ? 'مقارنة العقار (ميزان المقارنة العادلة)' : 'Compare Property (Justice Scale)')
+              }
+              aria-pressed={isCompared}
+              className={`p-2 rounded-full backdrop-blur-md transition-all duration-300 transform active:scale-90 border flex items-center justify-center ${
+                isCompared
+                  ? 'bg-[#765541] dark:bg-[#C47D60] text-white shadow-md ring-2 ring-[#C47D60]/40 scale-105 border-[#765541] dark:border-[#C47D60]'
+                  : 'bg-white/85 dark:bg-[#24201D]/85 hover:bg-white dark:hover:bg-[#2D2723] text-stone-700 dark:text-stone-300 hover:text-[#765541] dark:hover:text-[#C47D60] hover:scale-110 shadow-sm border-[#E9DDCC]/70 dark:border-[#3D352E]'
               }`}
-              title={language === 'ar' ? 'تحديد للمقارنة' : 'Select to compare'}
+              title={
+                isCompared
+                  ? (language === 'ar' ? 'في المقارنة (ميزان العدالة - انقر للإزالة)' : 'Comparing (Justice Scale - click to remove)')
+                  : (language === 'ar' ? 'مقارنة العقار (ميزان العدالة)' : 'Compare Property (Justice Scale)')
+              }
             >
-              <input
-                type="checkbox"
-                checked={isCompared}
-                onChange={() => toggleCompare(property.id)}
-                className="sr-only"
-                aria-label={language === 'ar' ? `مقارنة ${property.titleAr}` : `Compare ${property.title}`}
-              />
-              <div
-                className={`w-3.5 h-3.5 rounded flex items-center justify-center border transition-colors ${
-                  isCompared
-                    ? 'bg-[#C47D60] border-[#C47D60] text-white'
-                    : 'border-stone-400 dark:border-stone-500 bg-white/50'
+              <Scale
+                className={`w-4 h-4 transition-all duration-300 ${
+                  isCompared ? 'stroke-[2.5] text-white' : 'stroke-[1.75]'
                 }`}
-              >
-                {isCompared && <Check className="w-3 h-3 stroke-[3]" />}
-              </div>
-              <span className="text-[10px] hidden sm:inline">
-                {language === 'ar' ? 'قارن' : 'Compare'}
-              </span>
-            </label>
+              />
+            </button>
 
             {/* Heart Favorite Toggle Button */}
             <button

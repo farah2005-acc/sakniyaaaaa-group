@@ -34,7 +34,7 @@ export const SakniyaLogo: React.FC<SakniyaLogoProps> = ({
     xl: { title: 'text-3xl', sub: 'text-sm' },
   };
 
-  const APP_ICON_PATH = '/src/assets/images/sakniya_house_logo_1792680398805.jpg';
+  const APP_ICON_PATH = '/src/assets/images/sakniya_house_logo_clean_1792715696089.jpg';
 
   return (
     <div

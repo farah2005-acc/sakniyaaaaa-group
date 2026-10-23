@@ -1,26 +1,32 @@
-# Sakniya UI & Theme System Upgrade
+# Sakniya Comprehensive Upgrade: Two-Way Reviews, Authentication, Justice-Scale Comparison & Identity Preservation
 
-Plan to implement interactive property comparison with a persistent docked bottom bar, 5-star rating components, a realistic table-lamp vector character synced to chat states, and a dynamic Light/Night theme system tailored to Sakniya's warm bohemian aesthetic.
+This plan specifies the complete end-to-end implementation for upgrading Sakniya into a production-grade rental ecosystem with mutual tenant/landlord accountability, standalone authentication, justice-scale comparison, and distinctive cartoon avatars while strictly preserving the original brand identity.
 
 ---
 
 ## User Review & Critical Decisions
 
 > [!IMPORTANT]
-> The following decisions were confirmed through interactive preferences:
-> - **Comparison Bar Style**: Floating bottom docked bar with property preview thumbnails, counter, individual remove tags, and primary "Compare Now" launcher.
-> - **Night Mode Atmosphere**: Warm bohemian espresso and deep charcoal (`#1C1917` / `#26221E`) with soft amber glow and terracotta accents, preserving the brand's natural aesthetic.
-> - **Star Rating UI**: Five interactive star glyphs with filled/half/empty states, numeric average, and review count fetched from state.
+> The following design decisions were confirmed via interactive user clarification and govern the execution:
+>
+> 1. **Two-Way Review Eligibility**: Reviews are permitted exclusively after a completed stay or confirmed rental booking (`status: 'confirmed' | 'completed'`) to guarantee verified, genuine rental experiences and prevent spam or fake reviews.
+> 2. **Authentication Flow**: The Login and Sign Up pages will use standard email and password input fields with client validation, credential persistence, and secure session management.
+> 3. **Comparison Icon Placement**: The justice-scale icon (`Scale`) will be positioned as a top corner overlay button directly paired with the favorite heart button on every property card.
+> 4. **Logo Modification Constraint**: The original house logo is preserved 100% with exact geometry, palette, and typography—the ONLY modification is the clean surgical removal of "EST. 2023".
 
 ---
 
 ## 1. Overview & Core Concept
 
-This upgrade elevates the user experience across browsing, discovery, and nighttime usability:
-- **Direct Side-by-Side Comparison**: Tenants can mark properties using a 'Compare' checkbox on cards and view an active docked comparison bar as soon as 2 or more properties are selected, enabling immediate multi-criteria evaluation.
-- **Visual Trust via 5-Star Reviews**: Property cards display an interactive 5-star rating element reflecting simulated reviews from the central data store.
-- **Realistic Misbah Lamp Assistant**: Replaces simple bulb iconography with an architectural bedside table-lamp vector featuring a pleated linen shade, terracotta ceramic urn base, and dynamic amber emission that automatically turns ON when chat is open and OFF when closed.
-- **Cozy Night Mode**: Seamless theme toggle featuring an animated Sun-to-Crescent-Moon transformation, persistent via `localStorage`, respecting system theme defaults without flicker.
+- **What It Delivers**:
+  - **Cleaned Brand Asset**: High-resolution Sakniya house emblem with "EST. 2023" cleanly removed, updated across favicons, app icons, and headers.
+  - **Balanced Justice-Scale Icon**: Replaces the comparison checkmark with a balanced scale of justice icon on property cards and comparison trays.
+  - **Two-Way Verified Review System**: Tenants evaluate landlords (communication, honesty, responsiveness, property maintenance), and Landlords evaluate tenants (payment reliability, communication, property care, respect for house rules).
+  - **Cartoon Female Avatar Trio**: High-fidelity cartoon illustrations for Farah (App Owner), Yomna (Landlord), and Nora (Student Tenant), replacing real photos.
+  - **Dedicated Authentication Pages**: Independent, responsive Login and Sign Up views with role selection, validation, and dashboard routing.
+  - **Role-Based Tenant & Landlord Dashboards**: Enforced role authorization preventing cross-account access and managing property listings or booking reviews.
+
+- **Target Audience**: Egyptian university students, roommates, and verified property owners seeking trustworthy, accountable rentals.
 
 ---
 
@@ -28,116 +34,106 @@ This upgrade elevates the user experience across browsing, discovery, and nightt
 
 ### Key User Flows
 
-1. **Theme Toggle Flow**:
-   - The user taps the theme toggle button in the header (or mobile drawer).
-   - The icon smoothly morphs between a radiant Sun and a clean Crescent Moon with a 250ms rotation and scale transition.
-   - The document updates with the `dark` class, transitioning the entire interface into a cozy bohemian night ambiance with deep espresso surfaces (`#1C1917`), dark taupe hairline dividers (`#3D352E`), and warm cream typography (`#EDE6DE`).
-   - Preference is stored in `localStorage.setItem('sakniya_theme', 'dark')`.
-
-2. **Property Comparison Flow**:
-   - Each property card displays a dedicated 'Compare' checkbox control in its actions cluster.
-   - When checked, the property ID is added to `comparedProperties` (max 3).
-   - As soon as 2 or 3 properties are checked, a persistent bottom bar smoothly slides up above the viewport base (or above the mobile navigation bar).
-   - The bar displays mini thumbnails of selected apartments/rooms, monthly prices, a remove button (`x`), and a prominent "Compare Now (2/3)" button.
-   - Tapping "Compare Now" opens the existing side-by-side comparison modal.
-   - Clicking "Clear" resets the comparison list and smoothly docks the bar away.
-
-3. **5-Star Rating Component Flow**:
-   - Each card renders 5 star glyphs with partial fill precision corresponding to the listing rating (e.g. 4.9 or 4.8).
-   - Hovering or tapping reveals the average score (e.g., `4.9/5.0`) and review count (e.g., `(18 reviews)`).
-
-4. **Realistic Misbah Lamp & Chat State Sync Flow**:
-   - The floating assistant button presents an authentic bedside table lamp with a pleated shade and terracotta base.
-   - When the user opens the chat (or triggers it from "Message Host" or quick actions), the lamp shade lights up with a warm amber gradient and radiant glow ring (`animate-glow`).
-   - When the chat dialog is closed or minimized, the light smoothly dims to the resting matte state.
-   - The lamp in the chat drawer header reflects the identical live lighting state.
-
----
-
-## 3. Key Product Decisions & Trade-Offs
-
-- **Decision 1: Persistent Bottom Comparison Bar vs. Header Badge**:
-  - *Chosen Approach*: Floating bottom docked bar that appears when $\ge 2$ properties are selected, with a maximum of 3 items.
-  - *Rationale*: Keeps comparison state constantly visible while browsing through long search results without forcing the user to scroll back to the top bar.
-  - *Accessibility & Spacing*: Pinned above the mobile bottom navigation bar when in mobile mode (`bottom-20` on mobile, `bottom-6` on desktop) so it never covers crucial interactive elements or the Misbah floating lamp.
-
-- **Decision 2: Warm Bohemian Night Mode vs. High-Contrast Slate**:
-  - *Chosen Approach*: Earthy dark espresso (`#1C1917`), cocoa charcoal (`#26221E`), and warm terracotta accents.
-  - *Rationale*: Maintains Sakniya's brand promise ("مكانك، وناسك، وراحتك") of cozy, calming interiors, avoiding the generic cold blue/slate aesthetic of standard dashboards.
-
-- **Decision 3: Standalone 5-Star SVG Component**:
-  - *Chosen Approach*: Reusable `StarRating` component calculating filled, half-filled, and empty stars based on numeric rating, supporting both Arabic and English reading directions.
-
----
-
-## 4. Technical Architecture & Data Strategy
-
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    AppContext / State                       │
-│  - theme: 'light' | 'dark' (localStorage + media query)     │
-│  - comparedProperties: string[] (max 3)                     │
-│  - isMisbahChatOpen: boolean (lamp state synchronization)   │
-│  - properties, favorites, reviews data                      │
-└──────────────┬──────────────────────────────┬───────────────┘
-               │                              │
-       ┌───────▼────────┐             ┌───────▼────────┐
-       │   ThemeToggle  │             │ PropertyCard   │
-       │ (Sun <-> Moon) │             │ - Compare check│
-       └────────────────┘             │ - 5-Star rating│
-                                      │ - Heart toggle │
-                                      └───────┬────────┘
-                                              │ (>= 2 selected)
-                                      ┌───────▼────────┐
-                                      │ ComparisonBar  │
-                                      │ (Bottom docked)│
-                                      └────────────────┘
+[ Unauthenticated / Visitor ]
+              │
+              ├──► [ Login Page ] ──► Validate Credentials ──► Route to Role Dashboard
+              │
+              └──► [ Sign Up Page ] ──► Select Role & Cartoon Avatar ──► Route to Role Dashboard
+                                                                             │
+       ┌─────────────────────────────────────────────────────────────────────┴─────────────────────────────────────────────────────────────────────┐
+       ▼                                                                                                                                           ▼
+[ Tenant Experience ]                                                                                                                       [ Landlord Experience ]
+• Browse listings with Justice-Scale (⚖️) & Heart (❤️)                                                                                      • Manage active listings & inquiries
+• Side-by-side comparison modal via persistent dock                                                                                         • View tenant profiles & landlord ratings
+• View landlord profile & tenant reviews                                                                                                    • Review tenants after confirmed stays
+• Submit landlord review after confirmed stay                                                                                               • Profile settings with Yomna avatar
+• Profile settings with Nora avatar
 ```
 
-### Component & State Plan
-
-1. **`src/context/AppContext.tsx`**:
-   - Add `theme: 'light' | 'dark'` and `toggleTheme: () => void`.
-   - Add `isMisbahChatOpen: boolean` and `setIsMisbahChatOpen: (open: boolean) => void`.
-   - Update `toggleCompare` and `clearCompare` functions.
-   - Sync `dark` class on `document.documentElement` whenever `theme` changes.
-
-2. **`src/components/common/ThemeToggle.tsx`**:
-   - Single animated button featuring smooth SVG path morph/rotation between radiant Sun and crescent Moon.
-
-3. **`src/components/common/StarRating.tsx`**:
-   - Reusable component displaying 5 star glyphs with fraction-filled SVGs, average score, and verified review count.
-
-4. **`src/components/misbah/RealisticLampIcon.tsx`**:
-   - Detailed SVG vector representing an authentic table lamp (pleated shade, neck, terracotta base, and ambient light cone) with smooth CSS transitions for ON/OFF states.
-
-5. **`src/components/discovery/PersistentComparisonBar.tsx`**:
-   - Docked bottom bar appearing when `comparedProperties.length >= 2`.
-   - Renders thumbnails, titles, prices, quick delete, and "Compare Now" CTA.
-
-6. **`src/components/discovery/PropertyCard.tsx`**:
-   - Integrate `StarRating` component.
-   - Add accessible 'Compare' checkbox next to the Heart button.
-
-7. **`src/index.css` & Dark Mode Token Layer**:
-   - Define coordinated CSS variables and utility classes for light and dark modes:
-     - Light: Background `#F8F4EC`, Surfaces `#FFFFFF`, Text `#34332F`.
-     - Dark: Background `#1C1917`, Surfaces `#26221E`, Text `#EDE6DE`, Borders `#3D352E`.
+### Visual Identity & Theme
+- **Color Discipline**:
+  - Dominant Canvas: Warm Ivory (`#F8F4EC`) / Night Espresso (`#191614`).
+  - Structural Surfaces: Paper Dune (`#E9DDCC`) / Deep Charcoal (`#24201D`).
+  - Primary Accent: Terracotta Clay (`#C47D60` / `#D8896C`).
+  - Trust & Rating Accents: Warm Amber Gold (`#F59E0B`) for 5-star ratings; Olive Bronze (`#697A58`) for verification shields.
+- **Comparison Icon (`Scale`)**:
+  - Inactive State: Translucent white/dark blur background with bronze outline.
+  - Active State: Terracotta filled badge with active glow and tooltip counter, representing fairness, trust, and balanced comparison.
+- **Avatars**:
+  - Farah: Confident, friendly cartoon woman in smart-casual bohemian attire representing the app leadership.
+  - Yomna: Professional, welcoming Egyptian cartoon landlady communicating warmth, property hosting, and responsibility.
+  - Nora: Youthful, cheerful cartoon student with casual college attire and study bag representing university tenants.
 
 ---
 
-## 5. Verification & Testing Steps
+## 3. Technical Architecture & System Diagram
 
-1. Verify theme toggle: Clicking switches between Sun and Moon, toggles `dark` class on `<html>`, and updates all views, cards, modals, and dropdowns.
-2. Verify persistence: Reloading the page maintains the selected theme.
-3. Verify comparison bar:
-   - Selecting 1 property does not show the bar.
-   - Selecting 2 or 3 properties smoothly brings up the docked bottom bar.
-   - Deselecting or clicking "Clear" dismisses the bar.
-   - Clicking "Compare Now" opens the comparison modal with the selected listings.
-4. Verify star rating: Displays 5 accurate star glyphs matching the property rating.
-5. Verify Misbah lamp:
-   - Lamp is OFF when chat is closed.
-   - Opening chat smoothly illuminates the lamp with a warm amber glow.
-   - Closing chat dims the lamp back to resting state.
-6. Verify mobile responsiveness and build compilation with `npm run build` / `compile_applet`.
+```
+┌─────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                             Sakniya Application State                                            │
+│                                           (AppContext + localStorage)                                           │
+└───────────────────────────────────────┬─────────────────────────────────────────────────┬───────────────────────┘
+                                        │                                                 │
+                  ┌─────────────────────▼────────────────────┐        ┌───────────────────▼─────────────────────┐
+                  │          Auth & User State               │        │        Review & Rating Store            │
+                  │  • currentUser (Farah / Yomna / Nora)    │        │  • reviews: UserReview[]                │
+                  │  • userRole: 'tenant' | 'owner' | 'admin'│        │  • submitReview(reviewData)             │
+                  │  • isAuthenticated: boolean              │        │  • getReviewsForUser(userId)            │
+                  └─────────────────────┬────────────────────┘        └───────────────────┬─────────────────────┘
+                                        │                                                 │
+          ┌─────────────────────────────┼─────────────────────────────┐                   │
+          ▼                             ▼                             ▼                   ▼
+┌───────────────────┐         ┌───────────────────┐         ┌───────────────────┐  ┌──────────────────────────┐
+│    LoginPage      │         │   SignUpPage      │         │ PropertyCard      │  │ ReviewsList & Modal      │
+│ • Role Selector   │         │ • Avatar Picker   │         │ • Justice-Scale   │  │ • 5-star criteria        │
+│ • Email / Password│         │ • Form Validation │         │ • Heart Favorite  │  │ • Verification check     │
+│ • Logo without EST│         │ • Redirect Router │         │ • Commute badge   │  │ • Two-way mutual view    │
+└───────────────────┘         └───────────────────┘         └───────────────────┘  └──────────────────────────┘
+```
+
+---
+
+## 4. Implementation Steps & Sub-Tasks
+
+### Step 1: Logo Correction & Asset Generation
+- Generate the corrected high-resolution Sakniya house logo with "EST. 2023" cleanly removed.
+- In parallel, generate the three cartoon female avatars (`avatar_farah_owner`, `avatar_yomna_landlord`, `avatar_nora_tenant`).
+- Update `/index.html`, `SakniyaLogo.tsx`, and all brand icon references to use the cleaned logo.
+
+### Step 2: Comparison Icon Restoration
+- Replace the checkmark checkbox in `PropertyCard.tsx` with the balanced justice scale icon (`Scale` from `lucide-react`).
+- Position it as a top corner overlay button directly paired with the favorite heart button.
+- Ensure click events propagate to `toggleCompare(property.id)` and update the persistent bottom comparison bar seamlessly.
+
+### Step 3: Two-Way Review Data Model & State
+- Extend `src/types/index.ts` with `UserReview` interface:
+  - Rating, multi-criteria breakdown (communication, honesty, cleanliness/property care, agreements).
+  - Reviewer ID, reviewer cartoon avatar, reviewer role, target user ID, booking ID, date, and comments.
+- Update `AppContext.tsx` with `reviews` state and `submitReview` action that verifies booking completion and blocks duplicates.
+- Pre-seed initial verified reviews between Yomna (Landlord) and Nora (Tenant) for realism.
+
+### Step 4: Review UI Components
+- Build `ReviewModal.tsx` for submitting star ratings and category scores.
+- Build `UserReviewsList.tsx` for displaying received reviews on tenant and landlord profiles with average rating calculation and category bars.
+
+### Step 5: Dedicated Login & Sign Up Pages
+- Build `src/components/auth/LoginPage.tsx`:
+  - Clean layout with the corrected Sakniya house logo.
+  - Role selector (Tenant / Landlord), email and password with show/hide toggle.
+  - Form validation, error messages, and loading state.
+  - Links to Sign Up.
+- Build `src/components/auth/SignUpPage.tsx`:
+  - Full name, email, phone, password, confirm password.
+  - Role selector and cartoon avatar picker (pre-selecting Nora for tenants or Yomna for landlords).
+  - Validation, duplicate email protection, and auto-login upon creation.
+
+### Step 6: Role Dashboards & Navigation Integration
+- Add Login/Sign Up buttons to `Header.tsx` and profile popover.
+- Update `TenantDashboard.tsx` to display Nora's cartoon avatar, her rental activity, and an "Add Review" button on confirmed stays.
+- Update `OwnerDashboard.tsx` to display Yomna's cartoon avatar, property listing management, and tenant reviews.
+- Enforce role-based permission checks on dashboard rendering and listing wizard.
+
+### Step 7: Compilation, Linting & Verification
+- Run `lint_applet` and `compile_applet`.
+- Verify responsive layout across mobile simulator and desktop views.

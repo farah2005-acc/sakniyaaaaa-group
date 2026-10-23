@@ -227,10 +227,10 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
                     </div>
                   </div>
 
-                  {/* Switch Role Fast Selection */}
+                  {/* Switch Role Fast Selection with Nora, Yomna, Farah */}
                   <div className="px-4 py-2 border-b border-[#E9DDCC] dark:border-[#3D352E]">
                     <p className="text-[10px] text-stone-400 dark:text-stone-500 uppercase font-semibold mb-1">
-                      {language === 'ar' ? 'تبديل الدور للتجربة' : 'Switch Role for Testing'}
+                      {language === 'ar' ? 'التبديل بين الحسابات التجريبية' : 'Demo Character Accounts'}
                     </p>
                     <div className="flex flex-col gap-1">
                       <button
@@ -238,27 +238,44 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
                           setRole('tenant');
                           setActiveTab('explore');
                         }}
-                        className={`text-left rtl:text-right px-2 py-1.5 rounded-lg transition-colors ${role === 'tenant' ? 'bg-[#765541] dark:bg-[#C47D60] text-white' : 'hover:bg-[#E9DDCC]/40 dark:hover:bg-[#2D2723] text-[#765541] dark:text-[#D4BFA8]'}`}
+                        className={`text-left rtl:text-right px-2.5 py-1.5 rounded-xl transition-all flex items-center gap-2 ${role === 'tenant' ? 'bg-[#765541] dark:bg-[#C47D60] text-white font-bold' : 'hover:bg-[#E9DDCC]/40 dark:hover:bg-[#2D2723] text-[#765541] dark:text-[#D4BFA8]'}`}
                       >
-                        {language === 'ar' ? 'طالب / مستأجر (كريم حسن)' : 'Student / Tenant (Karim)'}
+                        <img
+                          src="/src/assets/images/avatar_nora_tenant_1792715698432.jpg"
+                          alt="Nora"
+                          className="w-5 h-5 rounded-full object-cover shrink-0"
+                        />
+                        <span>{language === 'ar' ? 'نورا (مستأجرة / طالبة)' : 'Nora (Student Tenant)'}</span>
                       </button>
+
                       <button
                         onClick={() => {
                           setRole('owner');
                           setActiveTab('owner_dashboard');
                         }}
-                        className={`text-left rtl:text-right px-2 py-1.5 rounded-lg transition-colors ${role === 'owner' ? 'bg-[#765541] dark:bg-[#C47D60] text-white' : 'hover:bg-[#E9DDCC]/40 dark:hover:bg-[#2D2723] text-[#765541] dark:text-[#D4BFA8]'}`}
+                        className={`text-left rtl:text-right px-2.5 py-1.5 rounded-xl transition-all flex items-center gap-2 ${role === 'owner' ? 'bg-[#765541] dark:bg-[#C47D60] text-white font-bold' : 'hover:bg-[#E9DDCC]/40 dark:hover:bg-[#2D2723] text-[#765541] dark:text-[#D4BFA8]'}`}
                       >
-                        {language === 'ar' ? 'صاحب سكن (الحاج محمود)' : 'Host / Owner (Haj Mahmoud)'}
+                        <img
+                          src="/src/assets/images/avatar_yomna_landlord_1792715698491.jpg"
+                          alt="Yomna"
+                          className="w-5 h-5 rounded-full object-cover shrink-0"
+                        />
+                        <span>{language === 'ar' ? 'يُمنى (مالكة عقار)' : 'Yomna (Landlord)'}</span>
                       </button>
+
                       <button
                         onClick={() => {
                           setRole('admin');
                           setActiveTab('admin');
                         }}
-                        className={`text-left rtl:text-right px-2 py-1.5 rounded-lg transition-colors ${role === 'admin' ? 'bg-[#765541] dark:bg-[#C47D60] text-white' : 'hover:bg-[#E9DDCC]/40 dark:hover:bg-[#2D2723] text-[#765541] dark:text-[#D4BFA8]'}`}
+                        className={`text-left rtl:text-right px-2.5 py-1.5 rounded-xl transition-all flex items-center gap-2 ${role === 'admin' ? 'bg-[#765541] dark:bg-[#C47D60] text-white font-bold' : 'hover:bg-[#E9DDCC]/40 dark:hover:bg-[#2D2723] text-[#765541] dark:text-[#D4BFA8]'}`}
                       >
-                        {language === 'ar' ? 'إدارة المنصة (المسؤول)' : 'Platform Administrator'}
+                        <img
+                          src="/src/assets/images/avatar_farah_owner_1792715698559.jpg"
+                          alt="Farah"
+                          className="w-5 h-5 rounded-full object-cover shrink-0"
+                        />
+                        <span>{language === 'ar' ? 'فرح (إدارة وسكنية)' : 'Farah (App Owner)'}</span>
                       </button>
                     </div>
                   </div>
@@ -268,7 +285,19 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
                       onClick={() => setActiveTab('bookings')}
                       className="w-full text-left rtl:text-right px-4 py-2 hover:bg-[#E9DDCC]/40 dark:hover:bg-[#2D2723] text-[#765541] dark:text-[#D4BFA8]"
                     >
-                      {language === 'ar' ? 'حجوزاتي وإيصالات الدفع' : 'My Bookings & Receipts'}
+                      {language === 'ar' ? 'حجوزاتي والتقييمات المتبادلة' : 'My Stays & Mutual Reviews'}
+                    </button>
+                    <button
+                      onClick={() => setActiveTab('login')}
+                      className="w-full text-left rtl:text-right px-4 py-2 hover:bg-[#E9DDCC]/40 dark:hover:bg-[#2D2723] text-[#765541] dark:text-[#D4BFA8]"
+                    >
+                      {language === 'ar' ? 'صفحة تسجيل الدخول' : 'Login Page'}
+                    </button>
+                    <button
+                      onClick={() => setActiveTab('signup')}
+                      className="w-full text-left rtl:text-right px-4 py-2 hover:bg-[#E9DDCC]/40 dark:hover:bg-[#2D2723] text-[#765541] dark:text-[#D4BFA8]"
+                    >
+                      {language === 'ar' ? 'صفحة إنشاء حساب جديد' : 'Sign Up Page'}
                     </button>
                     <button
                       onClick={() => setActiveModal('verify')}

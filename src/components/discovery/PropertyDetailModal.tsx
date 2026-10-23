@@ -42,7 +42,16 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
     setActiveChatRecipient,
     setActiveModal,
     showNotification,
+    reviews,
   } = useApp();
+
+  const ownerReviews = reviews.filter(
+    (r) => r.targetUserId === property.ownerId || r.targetUserId === 'owner-1'
+  );
+  const avgOwnerRating =
+    ownerReviews.length > 0
+      ? (ownerReviews.reduce((sum, r) => sum + r.rating, 0) / ownerReviews.length).toFixed(1)
+      : property.rating?.toFixed(1) || '4.9';
 
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [selectedRoom, setSelectedRoom] = useState<PropertyRoom | undefined>(
@@ -325,9 +334,16 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
                     <span>{property.ownerName}</span>
                     <ShieldCheck className="w-4 h-4 text-[#697A58]" />
                   </div>
-                  <p className="text-xs text-stone-500">
-                    {language === 'ar' ? 'صاحب عقار موثق الهوية والملكية' : 'Verified Owner & Verified Title'}
-                  </p>
+                  <div className="flex items-center gap-2 mt-0.5">
+                    <span className="flex items-center gap-1 text-[11px] font-bold text-[#F59E0B]">
+                      <Star className="w-3.5 h-3.5 fill-current" />
+                      <span>{avgOwnerRating}</span>
+                    </span>
+                    <span className="text-stone-300">·</span>
+                    <span className="text-xs text-stone-500">
+                      {ownerReviews.length} {language === 'ar' ? 'تقييمات موثقة' : 'verified reviews'}
+                    </span>
+                  </div>
                 </div>
               </div>
               <button
@@ -338,6 +354,43 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
                 <span>{language === 'ar' ? 'مراسلة المالك' : 'Message Host'}</span>
               </button>
             </div>
+
+            {/* Reviews about this Landlord */}
+            {ownerReviews.length > 0 && (
+              <div className="bg-white p-5 rounded-2xl border border-[#E9DDCC] space-y-3">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-bold text-xs uppercase text-[#765541]">
+                    {language === 'ar' ? 'آراء المستأجرين في المالك' : 'Tenant Reviews & Feedback'}
+                  </h3>
+                  <span className="text-[11px] font-mono font-bold text-[#C47D60]">
+                    ★ {avgOwnerRating} / 5
+                  </span>
+                </div>
+                <div className="space-y-2.5">
+                  {ownerReviews.slice(0, 2).map((r) => (
+                    <div key={r.id} className="p-3 bg-[#F8F4EC] rounded-xl border border-[#E9DDCC] space-y-1">
+                      <div className="flex items-center justify-between text-xs">
+                        <div className="flex items-center gap-2">
+                          <img
+                            src={r.reviewerAvatar}
+                            alt={r.reviewerName}
+                            className="w-5 h-5 rounded-full object-cover"
+                          />
+                          <span className="font-bold text-[#34332F]">{r.reviewerName}</span>
+                        </div>
+                        <div className="flex items-center text-[#F59E0B] text-xs">
+                          <Star className="w-3 h-3 fill-current" />
+                          <span className="ml-1 font-mono font-bold">{r.rating}</span>
+                        </div>
+                      </div>
+                      <p className="text-[11px] text-stone-600 leading-relaxed italic">
+                        "{r.comment}"
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Right Column: Sticky Purchase Box */}

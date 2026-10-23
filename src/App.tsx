@@ -18,6 +18,8 @@ import { AdminConsole } from './components/admin/AdminConsole';
 import { MisbahWidget } from './components/misbah/MisbahWidget';
 import { PersistentComparisonBar } from './components/discovery/PersistentComparisonBar';
 import { MobileFrameWrapper } from './components/mobile/MobileFrameWrapper';
+import { LoginPage } from './components/auth/LoginPage';
+import { SignUpPage } from './components/auth/SignUpPage';
 import { PropertyListing, PropertyRoom, Booking } from './types';
 import { Sparkles, ShieldCheck, Heart, Map, List, CheckCircle2 } from 'lucide-react';
 
@@ -273,6 +275,24 @@ const MainApp: React.FC = () => {
           )}
 
           {activeTab === 'admin' && <AdminConsole />}
+
+          {activeTab === 'login' && (
+            <LoginPage
+              onNavigateToSignUp={() => setActiveTab('signup')}
+              onSuccessRedirect={(userRole) => {
+                setActiveTab(userRole === 'owner' ? 'owner_dashboard' : 'explore');
+              }}
+            />
+          )}
+
+          {activeTab === 'signup' && (
+            <SignUpPage
+              onNavigateToLogin={() => setActiveTab('login')}
+              onSuccessRedirect={(userRole) => {
+                setActiveTab(userRole === 'owner' ? 'owner_dashboard' : 'explore');
+              }}
+            />
+          )}
 
         </main>
 

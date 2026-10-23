@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import { Booking } from '../../types';
+import { ReviewModal } from '../reviews/ReviewModal';
+import { UserReviewsList } from '../reviews/UserReviewsList';
 import {
   Calendar,
   ShieldCheck,
@@ -14,6 +16,8 @@ import {
   GraduationCap,
   Sparkles,
   ChevronRight,
+  Star,
+  CheckCircle2,
 } from 'lucide-react';
 
 export const TenantDashboard: React.FC = () => {
@@ -21,6 +25,7 @@ export const TenantDashboard: React.FC = () => {
     user,
     language,
     bookings,
+    reviews,
     updateBookingStatus,
     setActiveChatRecipient,
     setActiveModal,
@@ -28,6 +33,7 @@ export const TenantDashboard: React.FC = () => {
   } = useApp();
 
   const [activeTab, setActiveTab] = useState<'all' | 'confirmed' | 'pending'>('all');
+  const [reviewingBooking, setReviewingBooking] = useState<Booking | null>(null);
 
   const myBookings = bookings.filter((b) => b.tenantId === user?.id || b.tenantId === 'user-tenant-1');
   const filteredBookings = activeTab === 'all'
@@ -225,12 +231,28 @@ export const TenantDashboard: React.FC = () => {
                       <Printer className="w-4 h-4" />
                     </button>
                     {b.status === 'confirmed' && (
-                      <button
-                        onClick={() => handleCancelBooking(b.id)}
-                        className="px-3 py-1.5 text-[11px] font-semibold text-red-600 hover:bg-red-50 rounded-xl transition-colors"
-                      >
-                        {language === 'ar' ? 'إلغاء الحجز' : 'Cancel'}
-                      </button>
+                      <>
+                        {reviews.some((r) => r.bookingId === b.id && r.reviewerId === user?.id) ? (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-semibold text-[#697A58] bg-[#697A58]/10 rounded-xl border border-[#697A58]/20">
+                            <CheckCircle2 className="w-3.5 h-3.5" />
+                            <span>{language === 'ar' ? 'تم تقييم المالك' : 'Reviewed'}</span>
+                          </span>
+                        ) : (
+                          <button
+                            onClick={() => setReviewingBooking(b)}
+                            className="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-bold text-white bg-[#C47D60] hover:bg-[#b06a4e] rounded-xl shadow-sm transition-colors"
+                          >
+                            <Star className="w-3.5 h-3.5 fill-current" />
+                            <span>{language === 'ar' ? 'تقييم المالك' : 'Rate Host'}</span>
+                          </button>
+                        )}
+                        <button
+                          onClick={() => handleCancelBooking(b.id)}
+                          className="px-3 py-1.5 text-[11px] font-semibold text-red-600 hover:bg-red-50 rounded-xl transition-colors"
+                        >
+                          {language === 'ar' ? 'إلغاء الحجز' : 'Cancel'}
+                        </button>
+                      </>
                     )}
                   </div>
                 </div>
@@ -239,6 +261,22 @@ export const TenantDashboard: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Tenant's Profile Reviews from Landlords */}
+      <UserReviewsList
+        targetUserId={user?.id || 'user-tenant-1'}
+        targetRole="tenant"
+        targetName={user?.name || 'Nora'}
+      />
+
+      {/* Review Modal */}
+      {reviewingBooking && (
+        <ReviewModal
+          booking={reviewingBooking}
+          onClose={() => setReviewingBooking(null)}
+          onSuccess={() => setReviewingBooking(null)}
+        />
+      )}
     </div>
   );
 };

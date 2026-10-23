@@ -15,6 +15,11 @@ export interface User {
   faculty?: string;
   workplace?: string;
   verificationDocsSubmitted?: boolean;
+  password?: string;
+  bio?: string;
+  bioAr?: string;
+  rating?: number;
+  reviewsCount?: number;
 }
 
 export type PropertyType = 'apartment' | 'private_room' | 'shared_room' | 'studio' | 'student_residence';
@@ -173,6 +178,12 @@ export interface RoommateQuestionnaire {
   conflictResolutionStyle: 'discuss_immediately' | 'calm_after_reflection' | 'written_notes';
   houseRulesAgreement: boolean;
 
+  // ML Features: Interests & Study Habits
+  interests?: string[];
+  studyStyle?: 'deep_focus_solo' | 'collaborative_study' | 'campus_library' | 'flexible';
+  studyHoursDaily?: number;
+  examSeasonRoutine?: 'silent_monk_mode' | 'moderate_routine' | 'study_group';
+
   // Preferences & Demographics
   gender: 'male' | 'female';
   genderPreference: 'same_gender' | 'any';
@@ -197,6 +208,18 @@ export interface RoommateProfile {
   bio: string;
   bioAr?: string;
   answers: RoommateQuestionnaire;
+  interests?: string[];
+  studyHabits?: {
+    style: string;
+    styleAr: string;
+    hoursPerDay: number;
+    preferredTime: string;
+    preferredTimeAr: string;
+  };
+  lifestyleHighlights?: {
+    en: string;
+    ar: string;
+  }[];
   updatedAt: string;
 }
 
@@ -214,6 +237,62 @@ export interface CompatibilityReport {
   potentialConflicts: { en: string; ar: string }[];
   missingInformation: { en: string; ar: string }[];
   suggestedQuestions: { en: string; ar: string }[];
+}
+
+export interface MLCompatibilityPillar {
+  key: 'study_habits' | 'lifestyle' | 'interests';
+  nameEn: string;
+  nameAr: string;
+  score: number; // 0 - 100
+  weight: number;
+  icon: string;
+  summaryEn: string;
+  summaryAr: string;
+}
+
+export interface MLCompatibilityReport extends CompatibilityReport {
+  mlOverallScore: number;
+  confidence: number;
+  vectorCosineSimilarity: number;
+  pillars: {
+    studyHabits: MLCompatibilityPillar;
+    lifestyle: MLCompatibilityPillar;
+    commonInterests: MLCompatibilityPillar;
+  };
+  commonInterests: {
+    id: string;
+    labelEn: string;
+    labelAr: string;
+    icon: string;
+  }[];
+  studyComparison: {
+    metricEn: string;
+    metricAr: string;
+    userValEn: string;
+    userValAr: string;
+    matchValEn: string;
+    matchValAr: string;
+    isMatch: boolean;
+  }[];
+  lifestyleComparison: {
+    metricEn: string;
+    metricAr: string;
+    userValEn: string;
+    userValAr: string;
+    matchValEn: string;
+    matchValAr: string;
+    isMatch: boolean;
+  }[];
+  aiInsight: {
+    en: string;
+    ar: string;
+    highlightBadgeEn: string;
+    highlightBadgeAr: string;
+  };
+  icebreaker: {
+    en: string;
+    ar: string;
+  };
 }
 
 export type BookingStatus =
@@ -307,4 +386,28 @@ export interface VerificationDocument {
   submittedAt: string;
   status: 'pending' | 'approved' | 'rejected';
   rejectionReason?: string;
+}
+
+export interface UserReview {
+  id: string;
+  bookingId: string;
+  propertyId?: string;
+  propertyTitle?: string;
+  propertyTitleAr?: string;
+  reviewerId: string;
+  reviewerName: string;
+  reviewerRole: 'tenant' | 'owner';
+  reviewerAvatar: string;
+  targetUserId: string;
+  targetUserName: string;
+  targetUserRole: 'tenant' | 'owner';
+  rating: number; // 1 to 5
+  criteria: {
+    communication: number; // 1 to 5
+    honestyOrReliability: number; // 1 to 5
+    cleanlinessOrPropertyCare: number; // 1 to 5
+    respectOrAgreements: number; // 1 to 5
+  };
+  comment: string;
+  createdAt: string;
 }

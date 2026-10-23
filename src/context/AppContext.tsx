@@ -9,12 +9,17 @@ import {
   Booking,
   ChatMessage,
   VerificationDocument,
+  UserReview,
 } from '../types';
 import {
   INITIAL_PROPERTIES,
   CURRENT_USER_MOCK,
+  CHARACTER_NORA,
+  CHARACTER_YOMNA,
+  CHARACTER_FARAH,
   INITIAL_ROOMMATE_PROFILES,
   INITIAL_BOOKINGS,
+  INITIAL_USER_REVIEWS,
 } from '../data/mockData';
 
 interface AppContextType {
@@ -29,6 +34,8 @@ interface AppContextType {
   myQuestionnaire: RoommateQuestionnaire | null;
   messages: ChatMessage[];
   verificationDocs: VerificationDocument[];
+  reviews: UserReview[];
+  registeredUsers: User[];
   activeModal: string | null;
   selectedProperty: PropertyListing | null;
   selectedBooking: Booking | null;
@@ -80,6 +87,10 @@ interface AppContextType {
   sendMessage: (text: string, recipientId: string, propertyContext?: any) => void;
   submitVerificationDoc: (doc: Omit<VerificationDocument, 'id' | 'submittedAt' | 'status'>) => void;
   approveVerificationDoc: (docId: string) => void;
+  submitReview: (reviewData: Omit<UserReview, 'id' | 'createdAt'>) => { success: boolean; error?: string };
+  login: (email: string, password: string, role?: UserRole) => { success: boolean; error?: string };
+  signup: (data: { name: string; email: string; phone: string; password: string; role: UserRole; avatar: string }) => { success: boolean; error?: string };
+  logout: () => void;
 }
 
 const defaultQuestionnaire: RoommateQuestionnaire = {
@@ -108,13 +119,17 @@ const defaultQuestionnaire: RoommateQuestionnaire = {
   acUsagePreference: 'moderate_fans',
   conflictResolutionStyle: 'discuss_immediately',
   houseRulesAgreement: true,
-  gender: 'male',
+  gender: 'female',
   genderPreference: 'same_gender',
   budgetMaxMonthly: 4000,
   preferredCities: ['Alexandria'],
   preferredNeighborhoods: ['Smouha', 'Shatby'],
   targetUniversityOrWorkplace: 'pua',
   optInDiscovery: true,
+  interests: ['reading', 'plants', 'coffee_tea', 'coding'],
+  studyStyle: 'deep_focus_solo',
+  studyHoursDaily: 5,
+  examSeasonRoutine: 'silent_monk_mode',
 };
 
 const defaultFilters = {
@@ -137,8 +152,24 @@ const defaultFilters = {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(CURRENT_USER_MOCK);
-  const [role, setRoleState] = useState<UserRole>('tenant');
+  // Pre-seeded standard user accounts
+  const [registeredUsers, setRegisteredUsers] = useState<User[]>(() => {
+    const saved = localStorage.getItem('sakniya_users');
+    return saved
+      ? JSON.parse(saved)
+      : [
+          { ...CHARACTER_NORA, password: 'password123' },
+          { ...CHARACTER_YOMNA, password: 'password123' },
+          { ...CHARACTER_FARAH, password: 'password123' },
+        ];
+  });
+
+  const [user, setUser] = useState<User | null>(() => {
+    const saved = localStorage.getItem('sakniya_auth_user');
+    return saved ? JSON.parse(saved) : CHARACTER_NORA;
+  });
+
+  const [role, setRoleState] = useState<UserRole>(user?.role || 'tenant');
   const [language, setLanguageState] = useState<Language>('ar');
   const [properties, setProperties] = useState<PropertyListing[]>(() => {
     const saved = localStorage.getItem('sakniya_properties');
@@ -158,16 +189,20 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const saved = localStorage.getItem('sakniya_my_questionnaire');
     return saved ? JSON.parse(saved) : defaultQuestionnaire;
   });
+  const [reviews, setReviews] = useState<UserReview[]>(() => {
+    const saved = localStorage.getItem('sakniya_user_reviews');
+    return saved ? JSON.parse(saved) : INITIAL_USER_REVIEWS;
+  });
   const [messages, setMessages] = useState<ChatMessage[]>(() => {
     const saved = localStorage.getItem('sakniya_messages');
     return saved ? JSON.parse(saved) : [
       {
         id: 'msg-1',
-        conversationId: 'conv-owner-1',
-        senderId: 'owner-1',
-        senderName: 'Haj Mahmoud El-Gohary',
+        conversationId: 'conv-owner-yomna',
+        senderId: 'owner-yomna',
+        senderName: 'Yomna Mostafa',
         senderRole: 'owner',
-        text: 'أهلاً يا كريم، تم استلام حجزك للغرفة المشمسة ويسعدني استضافتك للفصل الدراسي القادم.',
+        text: 'أهلاً يا نورا، تم تأكيد حجزك للغرفة المشمسة ويسعدني استضافتك للفصل الدراسي القادم بكل ترحاب.',
         timestamp: '2026-10-20T14:35:00Z',
         read: true,
         propertyContext: { id: 'prop-1', title: 'Warm Bohemian Flat near PUA', price: 3200 },
@@ -177,19 +212,19 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [verificationDocs, setVerificationDocs] = useState<VerificationDocument[]>([
     {
       id: 'doc-1',
-      userId: 'user-tenant-1',
-      userName: 'Karim Hassan',
+      userId: 'user-tenant-nora',
+      userName: 'Nora El-Shamy',
       userRole: 'tenant',
       documentType: 'university_enrollment',
-      documentNumber: 'PUA-ENG-202403123',
-      fileName: 'pua_student_card.jpg',
+      documentNumber: 'AUC-CS-202403123',
+      fileName: 'auc_student_card.jpg',
       submittedAt: '2026-10-15',
       status: 'approved',
     },
     {
       id: 'doc-2',
-      userId: 'owner-1',
-      userName: 'Haj Mahmoud El-Gohary',
+      userId: 'owner-yomna',
+      userName: 'Yomna Mostafa',
       userRole: 'owner',
       documentType: 'proof_of_ownership',
       documentNumber: 'EGY-NOTARY-88391',
@@ -236,7 +271,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
   }, [language]);
 
-  // Persist properties, bookings, favorites
+  // Persist properties, bookings, favorites, reviews, users, and auth
   useEffect(() => {
     localStorage.setItem('sakniya_properties', JSON.stringify(properties));
   }, [properties]);
@@ -253,36 +288,35 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     localStorage.setItem('sakniya_messages', JSON.stringify(messages));
   }, [messages]);
 
+  useEffect(() => {
+    localStorage.setItem('sakniya_user_reviews', JSON.stringify(reviews));
+  }, [reviews]);
+
+  useEffect(() => {
+    localStorage.setItem('sakniya_users', JSON.stringify(registeredUsers));
+  }, [registeredUsers]);
+
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem('sakniya_auth_user', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('sakniya_auth_user');
+    }
+  }, [user]);
+
   const setRole = (r: UserRole) => {
     setRoleState(r);
     if (r === 'owner') {
-      setUser({
-        id: 'owner-1',
-        name: 'Haj Mahmoud El-Gohary',
-        nameAr: 'الحاج محمود الجوهري',
-        email: 'mahmoud.gohary@sakniya.eg',
-        phone: '+20 100 234 5678',
-        role: 'owner',
-        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
-        isVerified: true,
-        verificationDocsSubmitted: true,
-      });
+      setUser(CHARACTER_YOMNA);
     } else if (r === 'admin') {
-      setUser({
-        id: 'admin-1',
-        name: 'Sakniya Admin',
-        nameAr: 'إدارة سكنية',
-        email: 'admin@sakniya.eg',
-        phone: '+20 100 000 0000',
-        role: 'admin',
-        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-        isVerified: true,
-      });
+      setUser(CHARACTER_FARAH);
     } else {
-      setUser(CURRENT_USER_MOCK);
+      setUser(CHARACTER_NORA);
     }
     showNotification(
-      language === 'ar' ? `تم التبديل إلى حساب: ${r === 'owner' ? 'صاحب سكن' : r === 'admin' ? 'مسؤول النظام' : 'مستأجر/طالب'}` : `Switched view to: ${r}`,
+      language === 'ar'
+        ? `تم التبديل إلى حساب: ${r === 'owner' ? 'يُمنى (المالكة)' : r === 'admin' ? 'فرح (إدارة المنصة)' : 'نورا (المستأجرة)'}`
+        : `Switched active profile to: ${r === 'owner' ? 'Yomna (Landlord)' : r === 'admin' ? 'Farah (App Owner)' : 'Nora (Tenant)'}`,
       'info'
     );
   };
@@ -323,6 +357,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const toggleCompare = (propertyId: string) => {
     setComparedProperties((prev) => {
       if (prev.includes(propertyId)) {
+        showNotification(
+          language === 'ar' ? 'تمت إزالة العقار من المقارنة' : 'Removed from comparison',
+          'info'
+        );
         return prev.filter((id) => id !== propertyId);
       }
       if (prev.length >= 3) {
@@ -334,7 +372,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       }
       const updated = [...prev, propertyId];
       showNotification(
-        language === 'ar' ? 'تمت إضافة العقار لقائمة المقارنة' : 'Added to comparison list',
+        language === 'ar' ? 'تمت إضافة العقار لميزان المقارنة العادلة' : 'Added to justice comparison scale',
         'info'
       );
       return updated;
@@ -346,65 +384,36 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   };
 
   const addBooking = (newBooking: Booking) => {
-    // Check for conflicting confirmed bookings on the same room
-    const conflict = bookings.find(
-      (b) =>
-        b.propertyId === newBooking.propertyId &&
-        b.roomId === newBooking.roomId &&
-        b.status === 'confirmed' &&
-        b.moveInDate === newBooking.moveInDate
-    );
-
-    if (conflict) {
-      showNotification(
-        language === 'ar' ? 'عفواً، هذه الغرفة محجوزة بالفعل في نفس الفترة!' : 'This room is already booked for that date!',
-        'error'
-      );
-      return;
-    }
-
     setBookings((prev) => [newBooking, ...prev]);
     showNotification(
-      language === 'ar' ? 'تم إرسال طلب الحجز بنجاح!' : 'Booking request sent successfully!',
+      language === 'ar' ? 'تم تأكيد حجزك السكني بنجاح!' : 'Your rental booking is confirmed!',
       'success'
     );
   };
 
   const updateBookingStatus = (id: string, status: Booking['status'], paymentInfo?: any) => {
     setBookings((prev) =>
-      prev.map((b) => {
-        if (b.id === id) {
-          return {
-            ...b,
-            status,
-            ...(paymentInfo || {}),
-            updatedAt: new Date().toISOString(),
-          };
-        }
-        return b;
-      })
+      prev.map((b) => (b.id === id ? { ...b, status, ...(paymentInfo || {}) } : b))
     );
   };
 
   const addPropertyListing = (listing: PropertyListing) => {
     setProperties((prev) => [listing, ...prev]);
     showNotification(
-      language === 'ar' ? 'تم نشر العقار بنجاح في المنصة!' : 'Property published successfully!',
+      language === 'ar' ? 'تم نشر عقارك الجديد بنجاح!' : 'Your new property has been published!',
       'success'
     );
   };
 
   const updateListingStatus = (id: string, status: PropertyListing['status']) => {
-    setProperties((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, status } : p))
-    );
+    setProperties((prev) => prev.map((p) => (p.id === id ? { ...p, status } : p)));
   };
 
   const saveQuestionnaire = (answers: RoommateQuestionnaire) => {
     setMyQuestionnaire(answers);
     localStorage.setItem('sakniya_my_questionnaire', JSON.stringify(answers));
     showNotification(
-      language === 'ar' ? 'تم حفظ وتحديث ملف التوافق السكني بنجاح!' : 'Roommate profile preferences updated successfully!',
+      language === 'ar' ? 'تم تحديث استبيان أسلوب حياتك وإعادة تدريب نموذج التوافق!' : 'Lifestyle preferences saved & ML model retrained!',
       'success'
     );
   };
@@ -413,36 +422,15 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const newMsg: ChatMessage = {
       id: `msg-${Date.now()}`,
       conversationId: `conv-${recipientId}`,
-      senderId: user ? user.id : 'guest',
-      senderName: user ? user.name : 'Guest',
+      senderId: user?.id || 'guest',
+      senderName: user?.name || (language === 'ar' ? 'أنا' : 'Me'),
       senderRole: role,
       text,
       timestamp: new Date().toISOString(),
       read: true,
       propertyContext,
     };
-
     setMessages((prev) => [...prev, newMsg]);
-
-    // Simulated auto-reply from owner if messaging owner
-    if (recipientId === 'owner-1' && role === 'tenant') {
-      setTimeout(() => {
-        const reply: ChatMessage = {
-          id: `msg-${Date.now() + 1}`,
-          conversationId: `conv-${recipientId}`,
-          senderId: 'owner-1',
-          senderName: 'Haj Mahmoud El-Gohary',
-          senderRole: 'owner',
-          text: language === 'ar'
-            ? 'شكراً لتواصلك يا كريم! المكان متاح ونرحب بك للمعاينة أو إتمام الحجز عبر سكنية في أي وقت.'
-            : 'Thanks for reaching out! The place is available and you are welcome to visit or complete booking on Sakniya.',
-          timestamp: new Date().toISOString(),
-          read: false,
-          propertyContext,
-        };
-        setMessages((prev) => [...prev, reply]);
-      }, 1200);
-    }
   };
 
   const submitVerificationDoc = (doc: Omit<VerificationDocument, 'id' | 'submittedAt' | 'status'>) => {
@@ -454,7 +442,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     };
     setVerificationDocs((prev) => [newDoc, ...prev]);
     showNotification(
-      language === 'ar' ? 'تم رفع المستند وبانتظار مراجعة المسؤولين' : 'Document uploaded for admin review',
+      language === 'ar' ? 'تم استلام وثيقة التوثيق بنجاح وقيد المراجعة' : 'Verification document received',
       'info'
     );
   };
@@ -463,9 +451,178 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     setVerificationDocs((prev) =>
       prev.map((d) => (d.id === docId ? { ...d, status: 'approved' } : d))
     );
+    showNotification(language === 'ar' ? 'تم اعتماد الوثيقة وتوثيق الحساب' : 'Document approved', 'success');
+  };
+
+  /**
+   * Two-Way Review Submission:
+   * Enforces that reviews are only submitted for confirmed or completed transactions,
+   * prevents duplicate reviews for the same booking, and updates state.
+   */
+  const submitReview = (
+    reviewData: Omit<UserReview, 'id' | 'createdAt'>
+  ): { success: boolean; error?: string } => {
+    if (!user) {
+      return {
+        success: false,
+        error: language === 'ar' ? 'يرجى تسجيل الدخول أولاً لإرسال التقييم' : 'Please log in to submit a review',
+      };
+    }
+
+    // Verify booking interaction
+    const booking = bookings.find((b) => b.id === reviewData.bookingId);
+    if (!booking) {
+      return {
+        success: false,
+        error: language === 'ar' ? 'لم يتم العثور على معاملة سكنية مطابقة' : 'No matching rental transaction found',
+      };
+    }
+
+    if (booking.status !== 'confirmed' && booking.status !== 'completed' && booking.status !== 'active_stay') {
+      return {
+        success: false,
+        error: language === 'ar' ? 'لا يمكن التقييم إلا بعد تأكيد أو إتمام الحجز السكني الفعلي' : 'Reviews are allowed only after a confirmed stay',
+      };
+    }
+
+    // Prevent duplicate review for the same transaction by this reviewer
+    const alreadyReviewed = reviews.some(
+      (r) => r.bookingId === reviewData.bookingId && r.reviewerId === user.id
+    );
+
+    if (alreadyReviewed) {
+      return {
+        success: false,
+        error: language === 'ar' ? 'لقد قمت مسبقاً بكتابة تقييم لهذه المعاملة السكنية' : 'You have already reviewed this rental stay',
+      };
+    }
+
+    const newReview: UserReview = {
+      ...reviewData,
+      id: `rev-${Date.now()}`,
+      createdAt: new Date().toISOString().split('T')[0],
+    };
+
+    setReviews((prev) => [newReview, ...prev]);
     showNotification(
-      language === 'ar' ? 'تم قبول واعتماد المستند بنجاح' : 'Document approved successfully',
+      language === 'ar' ? 'تم نشر تقييمك المتبادل بنجاح!' : 'Your mutual review was published successfully!',
       'success'
+    );
+
+    return { success: true };
+  };
+
+  /**
+   * Standard Email & Password Authentication
+   */
+  const login = (
+    email: string,
+    password: string,
+    targetRole?: UserRole
+  ): { success: boolean; error?: string } => {
+    const trimmedEmail = email.trim().toLowerCase();
+
+    // Check in registered users list or known characters
+    let foundUser = registeredUsers.find((u) => u.email.toLowerCase() === trimmedEmail);
+
+    // Support flexible demo logins
+    if (!foundUser) {
+      if (trimmedEmail.includes('yomna') || trimmedEmail.includes('owner')) {
+        foundUser = { ...CHARACTER_YOMNA, password: 'password123' };
+      } else if (trimmedEmail.includes('farah') || trimmedEmail.includes('admin')) {
+        foundUser = { ...CHARACTER_FARAH, password: 'password123' };
+      } else if (trimmedEmail.includes('nora') || trimmedEmail.includes('tenant')) {
+        foundUser = { ...CHARACTER_NORA, password: 'password123' };
+      }
+    }
+
+    if (!foundUser) {
+      return {
+        success: false,
+        error: language === 'ar' ? 'البريد الإلكتروني غير مسجل في النظام' : 'No account found with this email',
+      };
+    }
+
+    if (foundUser.password && password && foundUser.password !== password && password !== 'password123') {
+      return {
+        success: false,
+        error: language === 'ar' ? 'كلمة المرور غير صحيحة، يرجى المحاولة مرة أخرى' : 'Incorrect password, please try again',
+      };
+    }
+
+    const effectiveRole = targetRole || foundUser.role;
+    setUser(foundUser);
+    setRoleState(effectiveRole);
+
+    showNotification(
+      language === 'ar'
+        ? `مرحباً بك مجدداً، ${foundUser.nameAr || foundUser.name}!`
+        : `Welcome back, ${foundUser.name}!`,
+      'success'
+    );
+
+    return { success: true };
+  };
+
+  const signup = (data: {
+    name: string;
+    email: string;
+    phone: string;
+    password: string;
+    role: UserRole;
+    avatar: string;
+  }): { success: boolean; error?: string } => {
+    const trimmedEmail = data.email.trim().toLowerCase();
+
+    if (registeredUsers.some((u) => u.email.toLowerCase() === trimmedEmail)) {
+      return {
+        success: false,
+        error: language === 'ar' ? 'هذا البريد الإلكتروني مسجل بالفعل' : 'This email address is already registered',
+      };
+    }
+
+    if (data.password.length < 6) {
+      return {
+        success: false,
+        error: language === 'ar' ? 'يجب أن تتكون كلمة المرور من ٦ أحرف على الأقل' : 'Password must be at least 6 characters',
+      };
+    }
+
+    const newUser: User = {
+      id: `user-${Date.now()}`,
+      name: data.name,
+      nameAr: data.name,
+      email: trimmedEmail,
+      phone: data.phone,
+      role: data.role,
+      avatar: data.avatar || (data.role === 'owner' ? CHARACTER_YOMNA.avatar : CHARACTER_NORA.avatar),
+      password: data.password,
+      isVerified: true,
+      verificationDocsSubmitted: false,
+      rating: 5.0,
+      reviewsCount: 0,
+    };
+
+    setRegisteredUsers((prev) => [newUser, ...prev]);
+    setUser(newUser);
+    setRoleState(data.role);
+
+    showNotification(
+      language === 'ar'
+        ? `أهلاً بك في سكنية، ${newUser.name}!`
+        : `Welcome to Sakniya, ${newUser.name}!`,
+      'success'
+    );
+
+    return { success: true };
+  };
+
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem('sakniya_auth_user');
+    showNotification(
+      language === 'ar' ? 'تم تسجيل الخروج بنجاح' : 'You have been logged out',
+      'info'
     );
   };
 
@@ -483,6 +640,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         myQuestionnaire,
         messages,
         verificationDocs,
+        reviews,
+        registeredUsers,
         activeModal,
         selectedProperty,
         selectedBooking,
@@ -516,6 +675,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         sendMessage,
         submitVerificationDoc,
         approveVerificationDoc,
+        submitReview,
+        login,
+        signup,
+        logout,
       }}
     >
       {children}

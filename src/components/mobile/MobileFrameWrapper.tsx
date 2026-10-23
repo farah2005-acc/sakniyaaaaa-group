@@ -25,7 +25,7 @@ export const MobileFrameWrapper: React.FC<MobileFrameWrapperProps> = ({
       <div className="mb-4 flex items-center justify-between w-full max-w-[420px] text-xs text-stone-300">
         <div className="flex items-center gap-2.5">
           <img
-            src="/src/assets/images/sakniya_house_logo_1792680398805.jpg"
+            src="/src/assets/images/sakniya_house_logo_clean_1792715696089.jpg"
             alt="Sakniya Mobile App Icon"
             referrerPolicy="no-referrer"
             className="w-8 h-8 rounded-xl shadow-md ring-1 ring-white/20 object-cover"
